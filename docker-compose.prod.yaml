@@ -1,0 +1,16 @@
+x-environment: &COMMON_VARS
+  DJANGO_SETTINGS_MODULE: 'config.settings.prod'
+  ENVIRONMENT: 'PRODUCTION'
+
+services:
+  backend:
+    extends:
+      service: backend
+      file: docker-compose.base.yaml
+    env_file:
+      - envs/.env.local
+    environment:
+      *COMMON_VARS
+
+networks:
+  main:

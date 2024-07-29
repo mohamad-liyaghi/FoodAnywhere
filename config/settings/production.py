@@ -1,4 +1,4 @@
-from .core import *
+from .core import *  # noqa
 
 DEBUG = True
 ALLOWED_HOSTS = []
