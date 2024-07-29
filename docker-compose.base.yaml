@@ -17,7 +17,7 @@ services:
             condition: service_healthy
   postgres:
     restart: on-failure
-    container_name: sample-postgres
+    container_name: food-anywhere-postgres
     image: postgres:16.3-alpine
     expose:
       - "5432"
