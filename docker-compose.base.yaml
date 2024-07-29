@@ -12,7 +12,9 @@ services:
       - .:/src
     networks:
       - main
-
+    depends_on:
+        postgres:
+            condition: service_healthy
   postgres:
     restart: on-failure
     container_name: sample-postgres
