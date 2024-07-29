@@ -11,6 +11,15 @@ services:
       - envs/.env.local
     environment:
       *COMMON_VARS
+  postgres:
+    extends:
+      service: postgres
+      file: docker-compose.base.yaml
+    env_file:
+      - envs/.env.prod
 
 networks:
   main:
+
+volumes:
+  food_anywhere_postgres_data:
