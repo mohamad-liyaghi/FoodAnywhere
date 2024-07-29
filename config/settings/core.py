@@ -1,4 +1,5 @@
 from pathlib import Path
+from decouple import config
 import os
 import sys
 
@@ -6,7 +7,7 @@ import sys
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
 
-SECRET_KEY = "django-insecure-q)^^s)zs4(o21ejz!g@an445z8k5n$t0p10jp654**-+c0c8pz"
+SECRET_KEY = config("SECRET_KEY")
 
 
 LOCAL_APPS = []

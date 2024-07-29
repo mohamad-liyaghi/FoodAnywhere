@@ -12,6 +12,7 @@ packaging==24.1
 pathspec==0.12.1
 platformdirs==4.2.2
 pre-commit==3.8.0
+python-decouple==3.8
 PyYAML==6.0.1
 sqlparse==0.5.1
 virtualenv==20.26.3
