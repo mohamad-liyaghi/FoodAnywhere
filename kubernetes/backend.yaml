@@ -18,7 +18,7 @@ spec:
         - name: backend
           image: ml06py/food_anywhere:latest
           command: ["/bin/sh"]
-          args: [ "/docker/scripts/backend.sh" ]
+          args: [ "./docker/scripts/backend.sh" ]
 
           volumeMounts:
             - name: env-file
