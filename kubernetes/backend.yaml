@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: food-anywhere-backend-dp
+  labels:
+    app: food-anywhere-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: food-anywhere-backend
+  template:
+    metadata:
+      labels:
+        app: food-anywhere-backend
+    spec:
+      containers:
+        - name: backend
+          image: ml06py/food_anywhere:latest
+          command: ["/bin/sh"]
+          args: [ "/docker/scripts/backend.sh" ]
+
+          volumeMounts:
+            - name: env-file
+              mountPath: /envs/.env
+              subPath: .env
+          envFrom:
+            - configMapRef:
+                name: food-anywhere-env
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DJANGO_SETTINGS_MODULE
+              value: "config.settings.local"
+            - name: ENVIRONMENT
+              value: "LOCAL"
+            - name: POSTGRES_PORT
+              value: "5432"
+
+      volumes:
+        - name: env-file
+          configMap:
+            name: food-anywhere-env-file
+            items:
+              - key: .env
+                path: .env
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector:
+    app: food-anywhere-backend
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000

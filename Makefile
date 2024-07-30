@@ -43,7 +43,9 @@ admin:
 	docker exec -it food-anywhere-backend python manage.py createsuperuser
 
 local_confmap:
-	kubectl create configmap food-anywhere-env --from-env-file=.envs/.env.local
+	kubectl create configmap food-anywhere-env --from-env-file=envs/.env.local \
+	&& kubectl create configmap food-anywhere-env-file --from-file=.env=envs/.env.local
 
 prod_confmap:
-	kubectl create configmap food-anywhere-env --from-env-file=.envs/.env.prod
+	kubectl create configmap food-anywhere-env --from-env-file=.envs/.env.prod \
+	&& kubectl create configmap food-anywhere-env-file --from-file=.env=envs/.env.prod
