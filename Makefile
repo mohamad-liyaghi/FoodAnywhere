@@ -1,4 +1,4 @@
-.PHONY: help build run deploy stop test migrations migrate admin local_confmap prod_confmap
+.PHONY: help build run deploy stop test migrations migrate admin local_confmap prod_confmap k8s
 
 help:
 	@echo "Available targets:"
@@ -13,6 +13,7 @@ help:
 	@echo "  admin   - Create admin user."
 	@echo "  local_confmap - Make Kubernetes config maps for local stage"
 	@echo "  prod_confmap - Make Kubernetes config maps for production stage"
+	@echo "  k8s - Deploy to Kubernetes"
 
 build:
 	docker compose build
@@ -49,3 +50,6 @@ local_confmap:
 prod_confmap:
 	kubectl create configmap food-anywhere-env --from-env-file=.envs/.env.prod \
 	&& kubectl create configmap food-anywhere-env-file --from-file=.env=envs/.env.prod
+
+k8s:
+	kubectl apply -f kubernetes/
