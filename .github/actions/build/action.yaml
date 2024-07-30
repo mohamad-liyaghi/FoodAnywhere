@@ -37,11 +37,11 @@ runs:
       with:
           images: ${{ inputs.registry }}/${{ inputs.image_name }}:latest
 
-    - name: Build and push Backend image
-      id: build-and-push-backend
-      uses: docker/build-push-action@v4
-      with:
-          context: .
-          file: ./docker/Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
+#    - name: Build and push Backend image
+#      id: build-and-push-backend
+#      uses: docker/build-push-action@v4
+#      with:
+#          context: .
+#          file: ./docker/Dockerfile
+#          push: true
+#          tags: ${{ steps.meta.outputs.tags }}
