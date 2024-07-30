@@ -1,4 +1,4 @@
-.PHONY: help build run deploy stop test migrations migrate admin
+.PHONY: help build run deploy stop test migrations migrate admin local_confmap prod_confmap
 
 help:
 	@echo "Available targets:"
@@ -11,6 +11,8 @@ help:
 	@echo "  migrations - Create migrations."
 	@echo "  migrate - Run migrations."
 	@echo "  admin   - Create admin user."
+	@echo "  local_confmap - Make Kubernetes config maps for local stage"
+	@echo "  prod_confmap - Make Kubernetes config maps for production stage"
 
 build:
 	docker compose build
@@ -39,3 +41,9 @@ migrate:
 
 admin:
 	docker exec -it food-anywhere-backend python manage.py createsuperuser
+
+local_confmap:
+	kubectl create configmap food-anywhere-env --from-env-file=.envs/.env.local
+
+prod_confmap:
+	kubectl create configmap food-anywhere-env --from-env-file=.envs/.env.prod

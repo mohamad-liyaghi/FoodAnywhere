@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: food-anywhere-postgres-dp
+  labels:
+    app: food-anywhere-postgres
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: food-anywhere-postgres
+
+  template:
+    metadata:
+      labels:
+        app: food-anywhere-postgres
+    spec:
+      containers:
+        - name: postgres
+          envFrom:
+            - configMapRef:
+                name: food-anywhere-env
+          env:
+            - name: POSTGRES_USER
+              value: "$(POSTGRES_USER)"
+            - name: POSTGRES_PASSWORD
+              value: "$(POSTGRES_PASSWORD)"
+            - name: POSTGRES_DB
+              value: "$(POSTGRES_DB)"
+
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-vol
+
+          image: postgres:16.3-alpine
+          ports:
+            - containerPort: 5432
+      volumes:
+        - name: postgres-vol
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  selector:
+    app: food-anywhere-postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
