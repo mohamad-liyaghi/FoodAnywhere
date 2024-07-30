@@ -35,17 +35,13 @@ runs:
       id: meta
       uses: docker/metadata-action@v4
       with:
-        images: ${{ inputs.registry }}/${{ inputs.image_name }}
-        tags: latest
+          images: ${{ inputs.registry }}/${{ inputs.image_name }}:latest
 
     - name: Build and push Backend image
       id: build-and-push-backend
       uses: docker/build-push-action@v4
       with:
-        file: ./docker/Dockerfile
-        context: .
-        push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
+          context: .
+          file: ./docker/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
