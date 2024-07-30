@@ -43,7 +43,7 @@ runs:
       id: build-and-push-backend
       uses: docker/build-push-action@v4
       with:
-        file: ./backend/docker/Dockerfile
+        file: ./docker/Dockerfile
         context: .
         push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta.outputs.tags }}
