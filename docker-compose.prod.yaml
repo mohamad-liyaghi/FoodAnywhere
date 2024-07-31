@@ -11,6 +11,14 @@ services:
       - envs/.env.local
     environment:
       *COMMON_VARS
+  celery:
+    extends:
+      service: celery
+      file: docker-compose.base.yaml
+    env_file:
+      - envs/.env.prod
+    environment:
+      *COMMON_VARS
   postgres:
     extends:
       service: postgres

@@ -17,6 +17,20 @@ services:
             condition: service_healthy
         redis:
             condition: service_healthy
+  celery:
+    restart: on-failure
+    container_name: food-anywhere-celery
+    command: sh ./docker/scripts/celery.sh
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    volumes:
+      - .:/src
+    networks:
+      - main
+    depends_on:
+        backend:
+            condition: service_started
   postgres:
     restart: on-failure
     container_name: food-anywhere-postgres
