@@ -30,6 +30,19 @@ services:
       interval: 2s
       timeout: 5s
       retries: 5
+  redis:
+    restart: on-failure
+    container_name: food-anywhere-redis
+    image: redis:6.2-alpine
+    expose:
+      - "6379"
+    networks:
+      - main
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
 
 networks:
   main:

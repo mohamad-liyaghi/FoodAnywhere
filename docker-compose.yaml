@@ -17,6 +17,10 @@ services:
       file: docker-compose.base.yaml
     env_file:
       - envs/.env.local
+  redis:
+    extends:
+      service: redis
+      file: docker-compose.base.yaml
 
 networks:
   main:
