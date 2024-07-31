@@ -29,3 +29,18 @@ spec:
               value: "config.settings.local"
             - name: ENVIRONMENT
               value: "LOCAL"
+
+
+        - name: celery-slave
+          image: ml06py/food_anywhere:latest
+          command: ["/bin/sh"]
+          args: [ "./docker/scripts/celery-beat.sh" ]
+
+          envFrom:
+            - configMapRef:
+                name: food-anywhere-env
+          env:
+            - name: DJANGO_SETTINGS_MODULE
+              value: "config.settings.local"
+            - name: ENVIRONMENT
+              value: "LOCAL"
