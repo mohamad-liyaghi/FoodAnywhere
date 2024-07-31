@@ -125,3 +125,11 @@ CACHES = {
         },
     }
 }
+
+# Email configs
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_HOST_USER = config("EMAIL_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_PASSWORD")
+EMAIL_PORT = config("EMAIL_PORT")
+DEFAULT_FROM_EMAIL = config("EMAIL_FROM")

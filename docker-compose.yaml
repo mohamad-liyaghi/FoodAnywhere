@@ -21,6 +21,10 @@ services:
     extends:
       service: redis
       file: docker-compose.base.yaml
+  smtp4dev:
+    extends:
+      service: smtp4dev
+      file: docker-compose.base.yaml
 
 networks:
   main:
