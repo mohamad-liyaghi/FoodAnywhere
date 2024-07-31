@@ -19,6 +19,14 @@ services:
       - envs/.env.prod
     environment:
       *COMMON_VARS
+  celery-beat:
+    extends:
+      service: celery-beat
+      file: docker-compose.base.yaml
+    env_file:
+      - envs/.env.prod
+    environment:
+      *COMMON_VARS
   postgres:
     extends:
       service: postgres
