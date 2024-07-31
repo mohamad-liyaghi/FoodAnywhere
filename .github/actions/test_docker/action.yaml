@@ -9,7 +9,7 @@ runs:
       uses: docker/setup-buildx-action@v2
 
     - name: Run Containers
-      run: make run
+      run: make run DETACHED=true
       shell: bash
 
     - name: Run tests
