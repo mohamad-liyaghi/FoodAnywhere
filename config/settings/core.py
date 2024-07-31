@@ -10,7 +10,9 @@ sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
 SECRET_KEY = config("SECRET_KEY")
 
 
-LOCAL_APPS = []
+LOCAL_APPS = [
+    "apps.core.apps.CoreConfig",
+]
 THIRD_PARTY_APPS = []
 
 INSTALLED_APPS = [
