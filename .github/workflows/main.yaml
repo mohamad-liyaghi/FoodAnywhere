@@ -22,3 +22,11 @@ jobs:
             registry: ${{ env.REGISTRY }}
             dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
             dockerhub_password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+  test-on-docker:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test On Docker
+        uses: ./.github/actions/test_docker
