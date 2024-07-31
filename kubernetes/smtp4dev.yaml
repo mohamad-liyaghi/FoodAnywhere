@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: food-anywhere-smtp-dp
+  name: food-anywhere-smtp4dev-dp
   labels:
-    app: food-anywhere-smtp
+    app: food-anywhere-smtp4dev
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: food-anywhere-smtp
+      app: food-anywhere-smtp4dev
   template:
     metadata:
       labels:
-        app: food-anywhere-smtp
+        app: food-anywhere-smtp4dev
     spec:
       containers:
-        - name: smtp
+        - name: smtp4dev
           image: rnwood/smtp4dev:v3
           ports:
             - name: tcp-80
@@ -30,11 +30,11 @@ metadata:
   name: smtp4dev
 spec:
   selector:
-    app: food-anywhere-smtp
+    app: food-anywhere-smtp4dev
   ports:
     - name: http
       port: 5000
       targetPort: tcp-80
-    - name: smtp
+    - name: smtp4dev
       port: 25
       targetPort: tcp-25
