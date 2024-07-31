@@ -21,6 +21,10 @@ runs:
       run: kubectl wait --for=condition=available --timeout=60s deployment/food-anywhere-postgres-dp
       shell: bash
 
+    - name: Wait for Redis Service
+      run: kubectl wait --for=condition=available --timeout=60s deployment/food-anywhere-redis-dp
+      shell: bash
+
     - name: Wait for Backend Deployments
       run: kubectl wait --for=condition=available --timeout=60s deployment/food-anywhere-backend-dp
       shell: bash
