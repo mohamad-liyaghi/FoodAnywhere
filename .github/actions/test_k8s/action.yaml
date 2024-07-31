@@ -25,6 +25,10 @@ runs:
       run: kubectl wait --for=condition=available --timeout=60s deployment/food-anywhere-redis-dp
       shell: bash
 
+    - name: Wait for Smtp4dev Service
+      run: kubectl wait --for=condition=available --timeout=60s deployment/food-anywhere-smtp4dev-dp
+      shell: bash
+
     - name: Wait for Backend Deployments
       run: kubectl wait --for=condition=available --timeout=60s deployment/food-anywhere-backend-dp
       shell: bash
