@@ -1,4 +1,5 @@
 import pytest
+from rest_framework_simplejwt.tokens import RefreshToken
 from users.models import User
 from users.tests.utils import generate_user_credentials
 
@@ -25,3 +26,10 @@ def inactive_user(django_db_setup, django_db_blocker) -> User:
 def superuser(django_db_setup, django_db_blocker) -> User:
     with django_db_blocker.unblock():
         yield User.objects.create_superuser(**generate_user_credentials())
+
+
+@pytest.fixture(scope="session")
+def refresh_token(django_db_setup, django_db_blocker, user: User) -> str:
+    with django_db_blocker.unblock():
+        refresh = RefreshToken.for_user(user)
+        return str(refresh)
