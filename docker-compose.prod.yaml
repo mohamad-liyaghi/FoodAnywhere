@@ -4,11 +4,12 @@ x-environment: &COMMON_VARS
 
 services:
   backend:
+    image: ml06py/food_anywhere:latest
     extends:
       service: backend
       file: docker-compose.base.yaml
     env_file:
-      - envs/.env.local
+      - envs/.env.prod
     environment:
       *COMMON_VARS
   celery:
