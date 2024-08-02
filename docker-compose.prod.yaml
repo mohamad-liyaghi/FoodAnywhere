@@ -49,6 +49,14 @@ services:
     extends:
       service: grafana
       file: docker-compose.base.yaml
+  node_exporter:
+    extends:
+      service: node_exporter
+      file: docker-compose.base.yaml
+  prometheus:
+    extends:
+      service: prometheus
+      file: docker-compose.base.yaml
 
 networks:
   main:
@@ -56,3 +64,5 @@ networks:
 volumes:
   food_anywhere_postgres_data:
   food_anywhere_grafana_data:
+  food_anywhere_node_exporter_data:
+  food_anywhere_prometheus_data:
