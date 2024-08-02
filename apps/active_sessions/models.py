@@ -12,7 +12,6 @@ class ActiveSession(models.Model):
     device_type = models.CharField(max_length=1, choices=LoginDeviceType.choices, default=LoginDeviceType.UNKNOWN)
     browser_type = models.CharField(max_length=1, choices=LoginBrowserType.choices, default=LoginBrowserType.UNKNOWN)
     ip_address = models.GenericIPAddressField()
-    is_deleted = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
