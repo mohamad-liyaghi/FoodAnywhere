@@ -4,7 +4,7 @@ from users.views.auth import (
     AccessTokenObtainView,
     AccessTokenRefreshView,
 )
-from users.views.profile import ProfileRetrieveUpdateView
+from users.views.profile import ProfileRetrieveUpdateView, PasswordChangeView
 
 app_name = "users"
 
@@ -16,6 +16,7 @@ AUTH_URLS = [
 ]
 PROFILE_URLS = [
     path("", ProfileRetrieveUpdateView.as_view(), name="profile"),
+    path("change-password/", PasswordChangeView.as_view(), name="change_password"),
 ]
 
 urlpatterns = [

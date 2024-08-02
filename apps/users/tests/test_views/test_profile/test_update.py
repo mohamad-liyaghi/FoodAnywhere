@@ -28,7 +28,7 @@ class TestProfileUpdateView:
 
     def test_update_with_valid_data_succeeds(self):
         self.client.force_authenticate(self.user)
-        response = self.client.put(self.url, self.data)
+        response = self.client.patch(self.url, self.data)
         assert response.status_code == status.HTTP_200_OK
         assert response.data["last_name"] == self.data["last_name"]
         self.user.refresh_from_db()
