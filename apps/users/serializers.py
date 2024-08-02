@@ -1,6 +1,11 @@
 from django.db import IntegrityError
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import (
+    TokenObtainPairSerializer,
+    TokenRefreshSerializer,
+)
 from users.models import User
+from active_sessions.enums import LoginDeviceType, LoginBrowserType
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -50,3 +55,13 @@ class UserPasswordChangeSerializer(serializers.Serializer):
         instance.set_password(new_password)
         instance.save()
         return instance
+
+
+class AccessTokenObtainSerializer(TokenObtainPairSerializer):
+    device_type = serializers.ChoiceField(choices=LoginDeviceType.choices)
+    browser_type = serializers.ChoiceField(choices=LoginBrowserType.choices)
+
+
+class AccessTokenRefreshSerializer(TokenRefreshSerializer):
+    device_type = serializers.ChoiceField(choices=LoginDeviceType.choices)
+    browser_type = serializers.ChoiceField(choices=LoginBrowserType.choices)

@@ -6,6 +6,7 @@ from drf_spectacular.views import SpectacularSwaggerView, SpectacularAPIView
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("users/", include("users.urls")),
+    path("active_sessions/", include("active_sessions.urls")),
 ]
 
 if settings.DEBUG:
