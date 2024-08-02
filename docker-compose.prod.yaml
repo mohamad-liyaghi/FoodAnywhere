@@ -1,5 +1,5 @@
 x-environment: &COMMON_VARS
-  DJANGO_SETTINGS_MODULE: 'config.settings.prod'
+  DJANGO_SETTINGS_MODULE: 'config.settings.production'
   ENVIRONMENT: 'PRODUCTION'
 
 services:
