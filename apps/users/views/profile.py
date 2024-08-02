@@ -16,6 +16,16 @@ from users.serializers import UserProfileSerializer
         },
         tags=["Profile"],
     ),
+    update=extend_schema(
+        summary="Update user profile",
+        description="Update user profile information",
+        responses={
+            200: UserProfileSerializer(),
+            400: OpenApiResponse(description="Bad Request"),
+            403: OpenApiResponse(description="Authentication credentials were not provided"),
+        },
+        tags=["Profile"],
+    ),
 )
 class ProfileRetrieveUpdateView(RetrieveUpdateAPIView):
     serializer_class = UserProfileSerializer
