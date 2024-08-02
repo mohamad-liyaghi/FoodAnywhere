@@ -14,7 +14,10 @@ LOCAL_APPS = [
     "apps.core.apps.CoreConfig",
     "apps.users.apps.UsersConfig",
 ]
-THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = [
+    "rest_framework",
+    "drf_spectacular",
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -139,3 +142,14 @@ DEFAULT_FROM_EMAIL = config("EMAIL_FROM")
 
 
 AUTH_USER_MODEL = "users.User"
+
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "FoodAnywhere Api Docs",
+    "DESCRIPTION": "The description intentionally left blank.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}

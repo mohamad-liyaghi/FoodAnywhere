@@ -1,9 +1,10 @@
 from django.urls import path, include
+from users.views.auth import UserRegisterView
 
 app_name = "users"
 
 
-AUTH_URLS = []
+AUTH_URLS = [path("register/", UserRegisterView.as_view(), name="register")]
 PROFILE_URLS = []
 
 urlpatterns = [
