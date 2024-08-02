@@ -10,4 +10,5 @@ def active_session(django_db_setup, django_db_blocker, user) -> ActiveSession:
             user=user,
             device=LoginDeviceType.ANDROID,
             browser=LoginBrowserType.CHROME,
+            ip_address="192.168.1.12",
         )

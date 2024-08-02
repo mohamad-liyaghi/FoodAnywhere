@@ -2,6 +2,7 @@ import pytest
 from django.urls import reverse
 from rest_framework import status
 from users.tests.utils import BASE_USER_PASSWORD
+from active_sessions.enums import LoginDeviceType, LoginBrowserType
 
 
 @pytest.mark.django_db
@@ -13,6 +14,8 @@ class TestAccessTokenObtainView:
         self.data = {
             "email": user.email,
             "password": BASE_USER_PASSWORD,
+            "device_type": LoginDeviceType.ANDROID,
+            "browser_type": LoginBrowserType.CHROME,
         }
 
     def test_obtain_with_invalid_password_fails(self):
@@ -34,3 +37,9 @@ class TestAccessTokenObtainView:
         assert response.status_code == status.HTTP_200_OK
         assert "access" in response.data
         assert "refresh" in response.data
+
+    def test_active_session_is_created_after_obtaining_token(self, user):
+        active_sessions_count = user.active_sessions.count()
+        response = self.client.post(self.url, data=self.data)
+        assert user.active_sessions.count() == active_sessions_count + 1
+        assert response.status_code == status.HTTP_200_OK
