@@ -7,7 +7,7 @@ from users.serializers import UserProfileSerializer
 
 
 @extend_schema_view(
-    retrieve=extend_schema(
+    get=extend_schema(
         summary="Retrieve user profile",
         description="Retrieve user profile information",
         responses={
@@ -16,7 +16,17 @@ from users.serializers import UserProfileSerializer
         },
         tags=["Profile"],
     ),
-    update=extend_schema(
+    put=extend_schema(
+        summary="Update user profile",
+        description="Update user profile information",
+        responses={
+            200: UserProfileSerializer(),
+            400: OpenApiResponse(description="Bad Request"),
+            403: OpenApiResponse(description="Authentication credentials were not provided"),
+        },
+        tags=["Profile"],
+    ),
+    patch=extend_schema(
         summary="Update user profile",
         description="Update user profile information",
         responses={
