@@ -41,9 +41,22 @@ services:
     extends:
       service: smtp4dev
       file: docker-compose.base.yaml
+  promtail:
+    extends:
+      service: promtail
+      file: docker-compose.base.yaml
+  loki:
+    extends:
+      service: loki
+      file: docker-compose.base.yaml
+  grafana:
+    extends:
+      service: grafana
+      file: docker-compose.base.yaml
 
 networks:
   main:
 
 volumes:
   food_anywhere_postgres_data:
+  food_anywhere_grafana_data:

@@ -26,6 +26,7 @@ services:
       dockerfile: ./docker/Dockerfile
     volumes:
       - .:/src
+      - ./logs/celery.log:/var/log/celery.log
     networks:
       - main
     depends_on:
@@ -40,6 +41,7 @@ services:
       dockerfile: ./docker/Dockerfile
     volumes:
       - .:/src
+      - ./logs/celery.log:/var/log/celery-beat.log
     networks:
       - main
     depends_on:
@@ -83,6 +85,37 @@ services:
       - "25"
     networks:
       - main
+  promtail:
+    image: grafana/promtail
+    container_name: food-anywhere-promtail
+    volumes:
+      - ./promtail/config.yaml:/etc/promtail/promtail.yaml
+      - ./logs/:/var/log/
+    command: --config.file=/etc/promtail/promtail.yaml
+    depends_on:
+      - backend
+    networks:
+      - main
+  loki:
+    image: grafana/loki
+    container_name: food-anywhere-loki
+    ports:
+      - "3100:3100"
+    depends_on:
+      - promtail
+    networks:
+      - main
+  grafana:
+    image: grafana/grafana
+    container_name: food-anywhere-grafana
+    ports:
+      - 3000:3000
+    depends_on:
+      - loki
+    networks:
+      - main
+    volumes:
+      - food_anywhere_grafana_data:/var/lib/grafana
 
 
 networks:

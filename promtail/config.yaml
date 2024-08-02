@@ -1,0 +1,42 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: info-log-scraper
+    static_configs:
+      - targets:
+          - backend
+        labels:
+          __path__: "/var/log/info.log"
+          app: backend
+
+  - job_name: critical-log-scraper
+    static_configs:
+      - targets:
+          - backend
+        labels:
+          __path__: "/var/log/critical.log"
+          app: backend
+
+  - job_name: celery-log-scraper
+    static_configs:
+      - targets:
+          - celery
+        labels:
+          __path__: "/var/log/celery.log"
+          app: celery
+
+  - job_name: celery-beat-log-scraper
+    static_configs:
+      - targets:
+          - celery-beat
+        labels:
+          __path__: "/var/log/celery-beat.log"
+          app: celery-beat
