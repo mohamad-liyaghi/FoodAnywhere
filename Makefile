@@ -46,10 +46,12 @@ admin:
 local_confmap:
 	kubectl create configmap food-anywhere-env --from-env-file=envs/.env.local \
 	&& kubectl create configmap food-anywhere-env-file --from-file=.env=envs/.env.local
+	&& kubectl create configmap prometheus-config --from-file=prometheus.yml=./prometheus/config.yaml
 
 prod_confmap:
 	kubectl create configmap food-anywhere-env --from-env-file=.envs/.env.prod \
 	&& kubectl create configmap food-anywhere-env-file --from-file=.env=envs/.env.prod
+	&& kubectl create configmap prometheus-config --from-file=prometheus.yml=./prometheus/config.yaml
 
 k8s:
 	kubectl apply -f kubernetes/
