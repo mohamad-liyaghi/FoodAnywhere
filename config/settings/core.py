@@ -1,5 +1,6 @@
 from pathlib import Path
 from decouple import config
+from datetime import timedelta
 import os
 import sys
 
@@ -145,6 +146,10 @@ AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
 }
 
 SPECTACULAR_SETTINGS = {
@@ -152,4 +157,9 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "The description intentionally left blank.",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
