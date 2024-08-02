@@ -26,6 +26,7 @@ services:
       dockerfile: ./docker/Dockerfile
     volumes:
       - .:/src
+      - ./logs/celery.log:/var/log/celery.log
     networks:
       - main
     depends_on:
@@ -40,6 +41,7 @@ services:
       dockerfile: ./docker/Dockerfile
     volumes:
       - .:/src
+      - ./logs/celery.log:/var/log/celery-beat.log
     networks:
       - main
     depends_on:
@@ -83,6 +85,73 @@ services:
       - "25"
     networks:
       - main
+  promtail:
+    image: grafana/promtail
+    container_name: food-anywhere-promtail
+    volumes:
+      - ./promtail/config.yaml:/etc/promtail/promtail.yaml
+      - ./logs/:/var/log/
+    command: --config.file=/etc/promtail/promtail.yaml
+    depends_on:
+      - backend
+    networks:
+      - main
+  loki:
+    image: grafana/loki
+    container_name: food-anywhere-loki
+    ports:
+      - "3100:3100"
+    depends_on:
+      - promtail
+    networks:
+      - main
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: food-anywhere-node-exporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+      - food_anywhere_node_exporter_data:/host
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    expose:
+      - 9100
+    networks:
+      - main
+  prometheus:
+    image: prom/prometheus
+    container_name: food-anywhere-prometheus
+    volumes:
+      - ./prometheus/config.yaml:/etc/prometheus/prometheus.yml
+      - food_anywhere_prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    ports:
+      - 9090:9090
+    depends_on:
+      - backend
+    networks:
+      - main
+  grafana:
+    image: grafana/grafana
+    container_name: food-anywhere-grafana
+    ports:
+      - 3000:3000
+    depends_on:
+      - loki
+    networks:
+      - main
+    volumes:
+      - food_anywhere_grafana_data:/var/lib/grafana
 
 
 networks:

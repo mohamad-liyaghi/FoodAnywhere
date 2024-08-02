@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: food-anywhere-promtail-dp
+  labels:
+    app: food-anywhere-promtail
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: food-anywhere-promtail
+  template:
+    metadata:
+      labels:
+        app: food-anywhere-promtail
+    spec:
+      containers:
+        - name: promtail
+          image: grafana/promtail
+          args:
+            - --config.file=/etc/promtail/promtail.yaml
+          volumeMounts:
+            - name: promtail-config
+              mountPath: /etc/promtail/promtail.yaml
+              subPath: promtail.yaml
+      volumes:
+        - name: promtail-config
+          configMap:
+            name: promtail-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: promtail
+spec:
+  selector:
+    app: food-anywhere-promtail
+  ports:
+    - protocol: TCP
+      port: 3100
+      targetPort: 3100

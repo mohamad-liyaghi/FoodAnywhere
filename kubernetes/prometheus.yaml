@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: food-anywhere-prometheus-dp
+  labels:
+    app: food-anywhere-prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: food-anywhere-prometheus
+  template:
+    metadata:
+      labels:
+        app: food-anywhere-prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - name: prometheus-config
+              mountPath: /etc/prometheus/prometheus.yml
+              subPath: prometheus.yml
+      volumes:
+        - name: prometheus-config
+          configMap:
+            name: prometheus-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+spec:
+  selector:
+    app: food-anywhere-prometheus
+  ports:
+    - protocol: TCP
+      port: 9090
+      targetPort: 9090
