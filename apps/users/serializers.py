@@ -15,3 +15,10 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             return User.objects.create_user(**validated_data)
         except IntegrityError:
             raise serializers.ValidationError("A user with similar email already exists.")
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["email", "first_name", "last_name", "balance"]
+        read_only_fields = ["email", "balance"]

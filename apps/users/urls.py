@@ -4,6 +4,7 @@ from users.views.auth import (
     AccessTokenObtainView,
     AccessTokenRefreshView,
 )
+from users.views.profile import ProfileRetrieveUpdateView
 
 app_name = "users"
 
@@ -13,7 +14,9 @@ AUTH_URLS = [
     path("token/access/", AccessTokenObtainView.as_view(), name="access-token"),
     path("token/refresh/", AccessTokenRefreshView.as_view(), name="refresh-token"),
 ]
-PROFILE_URLS = []
+PROFILE_URLS = [
+    path("", ProfileRetrieveUpdateView.as_view(), name="profile"),
+]
 
 urlpatterns = [
     path("auth/", include(AUTH_URLS)),
