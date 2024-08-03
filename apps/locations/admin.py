@@ -24,6 +24,7 @@ class LocationAdmin(GISModelAdmin):
                     "latitude",
                     "created_at",
                     "updated_at",
+                    "description",
                 )
             },
         ),
