@@ -50,11 +50,12 @@ services:
   postgres:
     restart: on-failure
     container_name: food-anywhere-postgres
-    image: postgres:16.3-alpine
+    image: postgis/postgis:16-3.4
     expose:
       - "5432"
     volumes:
       - food_anywhere_postgres_data:/var/lib/postgresql/data/
+      - ./docker/scripts/postgres.sh:/docker-entrypoint-initdb.d/entrypoint.sh
     networks:
       - main
     healthcheck:

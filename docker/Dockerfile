@@ -6,6 +6,12 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Install system dependencies
 RUN apk update && apk add gcc musl-dev &&  apk add linux-headers
 
+# Install gdal-bin libgdal-dev python3-gdal
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community gdal-tools gdal-dev py3-gdal
+
+# install geos
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community geos-dev
+
 # Upgrade pip
 RUN pip install --upgrade pip
 
@@ -19,3 +25,4 @@ COPY . /src/
 WORKDIR /src
 
 EXPOSE 8000
+# TODO: This Dockerfile is shit, clean it up
