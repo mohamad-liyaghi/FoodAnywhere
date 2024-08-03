@@ -3,9 +3,6 @@ services:
     restart: on-failure
     command: sh ./docker/scripts/backend.sh
     container_name: food-anywhere-backend
-    build:
-      context: .
-      dockerfile: ./docker/Dockerfile
     ports:
       - "8000:8000"
     volumes:

@@ -7,6 +7,9 @@ services:
     extends:
       service: backend
       file: docker-compose.base.yaml
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
     env_file:
       - envs/.env.local
     environment:
