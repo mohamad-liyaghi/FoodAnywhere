@@ -33,11 +33,7 @@ class LocationAdmin(GISModelAdmin):
     map_height = 500
     map_srid = 4326
     modifiable = False
-    extra_js = ["https://maps.google.com/maps/api/js?key=YOUR_API_KEY&libraries=places"]
     openlayers_url = "https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js"
-    openlayers_extra_params = {
-        "key": "YOUR_API_KEY",
-    }
     openlayers_default_lon = 5
     openlayers_default_lat = 40
     openlayers_default_zoom = 4
@@ -48,7 +44,6 @@ class LocationAdmin(GISModelAdmin):
         ("Google Satellite", "SATELLITE"),
     ]
     openlayers_map_srid = 4326
-    openlayers_geocode_url = "https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"
     openlayers_units = "m"
     openlayers_max_zoom = 19
     openlayers_min_zoom = 3
