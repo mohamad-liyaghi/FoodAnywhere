@@ -15,6 +15,7 @@ LOCAL_APPS = [
     "apps.core.apps.CoreConfig",
     "apps.users.apps.UsersConfig",
     "apps.active_sessions.apps.ActiveSessionsConfig",
+    "apps.locations.apps.LocationsConfig",
 ]
 THIRD_PARTY_APPS = [
     "rest_framework",
