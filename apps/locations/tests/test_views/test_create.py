@@ -1,7 +1,6 @@
 import pytest
 import json
 from django.urls import reverse
-from django.contrib.gis.geos import Point
 from rest_framework import status
 
 
