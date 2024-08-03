@@ -26,14 +26,14 @@ spec:
               value: "$(POSTGRES_USER)"
             - name: POSTGRES_PASSWORD
               value: "$(POSTGRES_PASSWORD)"
-            - name: POSTGRES_DB
-              value: "$(POSTGRES_DB)"
+            - name: POSTGRES_DBNAME
+              value: "$(POSTGRES_DBNAME)"
 
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres-vol
 
-          image: postgres:16.3-alpine
+          image: postgis/postgis:16-3.4
           ports:
             - containerPort: 5432
       volumes:
