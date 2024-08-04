@@ -51,6 +51,18 @@ class VendorRestaurantListCreateView(ListCreateAPIView):
         },
         tags=["Vendor Restaurants"],
     ),
+    put=extend_schema(
+        summary="Update a restaurant",
+        description="Update a restaurant by id.",
+        request=RestaurantSerializer,
+        responses={
+            200: RestaurantSerializer,
+            400: OpenApiResponse(description="Bad request"),
+            403: OpenApiResponse(description="Unauthorized"),
+            404: OpenApiResponse(description="Not found"),
+        },
+        tags=["Vendor Restaurants"],
+    ),
 )
 class VendorRestaurantView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
@@ -63,3 +75,9 @@ class VendorRestaurantView(RetrieveUpdateDestroyAPIView):
                 uuid=self.kwargs["uuid"],
                 status=RestaurantStatus.APPROVED,
             )
+        return get_object_or_404(
+            Restaurant.objects.select_related("owner"),
+            uuid=self.kwargs["uuid"],
+            owner=self.request.user,
+            status__in=[RestaurantStatus.REQUESTED, RestaurantStatus.APPROVED],
+        )
