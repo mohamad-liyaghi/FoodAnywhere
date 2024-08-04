@@ -16,3 +16,9 @@ class LocationSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
         read_only_fields = ["uuid", "longitude", "latitude", "created_at", "updated_at"]
+
+
+class LocationUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = ["is_primary", "title", "description", "location"]

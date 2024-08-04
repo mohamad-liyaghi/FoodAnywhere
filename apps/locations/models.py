@@ -1,6 +1,5 @@
 from django.contrib.gis.db import models
 from django.conf import settings
-from django.db.models import Q
 from uuid import uuid4
 
 
@@ -21,15 +20,10 @@ class Location(models.Model):
 
     class Meta:
         ordering = ["created_at"]
-        constraints = [
-            models.UniqueConstraint(
-                fields=["user", "is_primary"],
-                condition=Q(is_primary=True),
-                name="unique_primary_location",
-            )
-        ]
 
     def save(self, *args, **kwargs):
         self.longitude = self.location.x
         self.latitude = self.location.y
+        if self.is_primary:
+            self.user.locations.filter(is_primary=True).update(is_primary=False)
         super().save(*args, **kwargs)

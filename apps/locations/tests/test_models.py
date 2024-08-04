@@ -1,5 +1,4 @@
 import pytest
-from django.db.utils import IntegrityError
 from locations.models import Location
 
 
@@ -14,11 +13,14 @@ class TestLocationModel:
     def test_location_latitude(self, location):
         assert location.latitude == location.location.y
 
-    def test_create_two_primary_locations_fails(self, location, user):
-        with pytest.raises(IntegrityError):
-            Location.objects.create(
-                user=user,
-                location=location.location,
-                description="Floor 2 - Room 202",
-                is_primary=True,
-            )
+    def test_set_other_locations_to_not_primary(self, location, user):
+        Location.objects.create(
+            user=user,
+            location=location.location,
+            description="Floor 2 - Room 202",
+            is_primary=True,
+        )
+        location.refresh_from_db()
+        assert location.is_primary is False
+        location.is_primary = True
+        location.save()
