@@ -8,6 +8,7 @@ urlpatterns = [
     path("users/", include("users.urls")),
     path("active_sessions/", include("active_sessions.urls")),
     path("locations/", include("locations.urls")),
+    path("restaurants/", include("restaurants.urls")),
 ]
 
 if settings.DEBUG:

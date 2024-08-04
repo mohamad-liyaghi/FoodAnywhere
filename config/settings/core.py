@@ -12,10 +12,11 @@ SECRET_KEY = config("SECRET_KEY")
 
 
 LOCAL_APPS = [
+    "apps.active_sessions.apps.ActiveSessionsConfig",
     "apps.core.apps.CoreConfig",
     "apps.users.apps.UsersConfig",
-    "apps.active_sessions.apps.ActiveSessionsConfig",
     "apps.locations.apps.LocationsConfig",
+    "apps.restaurants.apps.RestaurantsConfig",
 ]
 THIRD_PARTY_APPS = [
     "rest_framework",
