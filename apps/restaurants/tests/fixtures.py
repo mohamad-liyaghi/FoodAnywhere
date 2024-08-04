@@ -41,3 +41,17 @@ def denied_restaurant(django_db_setup, django_db_blocker, user) -> Restaurant:
             location=Point(-73.935242, 40.730610),
             status=RestaurantStatus.DENIED,
         )
+
+
+@pytest.fixture(scope="session")
+def deleted_restaurant(django_db_setup, django_db_blocker, user) -> Restaurant:
+    with django_db_blocker.unblock():
+        yield Restaurant.objects.create(
+            owner=user,
+            name="Deleted Location",
+            description="Deleted Location Description",
+            phone="123456789",
+            location=Point(-73.935242, 40.730610),
+            status=RestaurantStatus.APPROVED,
+            is_soft_deleted=True,
+        )

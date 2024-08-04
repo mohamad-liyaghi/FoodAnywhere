@@ -34,7 +34,7 @@ class VendorRestaurantListCreateView(ListCreateAPIView):
     serializer_class = RestaurantSerializer
 
     def get_queryset(self):
-        return Restaurant.objects.select_related("owner").filter(owner=self.request.user)
+        return Restaurant.objects.select_related("owner").filter(owner=self.request.user, is_soft_deleted=False)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user, status=RestaurantStatus.REQUESTED)
@@ -63,6 +63,16 @@ class VendorRestaurantListCreateView(ListCreateAPIView):
         },
         tags=["Vendor Restaurants"],
     ),
+    delete=extend_schema(
+        summary="Delete a restaurant",
+        description="Delete a restaurant by id.",
+        responses={
+            204: OpenApiResponse(description="No content"),
+            403: OpenApiResponse(description="Unauthorized"),
+            404: OpenApiResponse(description="Not found"),
+        },
+        tags=["Vendor Restaurants"],
+    ),
 )
 class VendorRestaurantView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
@@ -74,10 +84,16 @@ class VendorRestaurantView(RetrieveUpdateDestroyAPIView):
                 Restaurant.objects.select_related("owner"),
                 uuid=self.kwargs["uuid"],
                 status=RestaurantStatus.APPROVED,
+                is_soft_deleted=False,
             )
         return get_object_or_404(
             Restaurant.objects.select_related("owner"),
             uuid=self.kwargs["uuid"],
             owner=self.request.user,
             status__in=[RestaurantStatus.REQUESTED, RestaurantStatus.APPROVED],
+            is_soft_deleted=False,
         )
+
+    def perform_destroy(self, instance):
+        instance.is_soft_deleted = True
+        instance.save()
