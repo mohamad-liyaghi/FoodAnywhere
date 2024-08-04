@@ -3,6 +3,7 @@ from rest_framework.test import APIClient
 from apps.users.tests.fixtures import *  # noqa
 from apps.active_sessions.tests.fixtures import *  # noqa
 from apps.locations.tests.fixtures import *  # noqa
+from apps.restaurants.tests.fixtures import *  # noqa
 
 
 @pytest.fixture(scope="class")
