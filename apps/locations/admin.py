@@ -5,7 +5,7 @@ from .models import Location
 
 @admin.register(Location)
 class LocationAdmin(GISModelAdmin):
-    list_display = ("user", "title", "location", "created_at", "updated_at")
+    list_display = ("user", "title", "location", "is_primary", "created_at")
     search_fields = ("title",)
     ordering = ("created_at",)
     list_filter = ("created_at", "updated_at")
@@ -25,6 +25,7 @@ class LocationAdmin(GISModelAdmin):
                     "created_at",
                     "updated_at",
                     "description",
+                    "is_primary",
                 )
             },
         ),
