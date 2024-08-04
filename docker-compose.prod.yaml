@@ -13,6 +13,7 @@ services:
     environment:
       *COMMON_VARS
   celery:
+    image: ml06py/food_anywhere:latest
     extends:
       service: celery
       file: docker-compose.base.yaml
@@ -21,6 +22,7 @@ services:
     environment:
       *COMMON_VARS
   celery-beat:
+    image: ml06py/food_anywhere:latest
     extends:
       service: celery-beat
       file: docker-compose.base.yaml

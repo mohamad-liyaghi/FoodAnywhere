@@ -18,6 +18,9 @@ services:
     extends:
       service: celery
       file: docker-compose.base.yaml
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
     env_file:
       - envs/.env.local
     environment:
@@ -26,6 +29,9 @@ services:
     extends:
       service: celery-beat
       file: docker-compose.base.yaml
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
     env_file:
       - envs/.env.local
     environment:

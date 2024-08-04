@@ -18,9 +18,6 @@ services:
     restart: on-failure
     container_name: food-anywhere-celery
     command: sh ./docker/scripts/celery.sh
-    build:
-      context: .
-      dockerfile: ./docker/Dockerfile
     volumes:
       - .:/src
       - ./logs/celery.log:/var/log/celery.log
@@ -33,9 +30,6 @@ services:
     restart: on-failure
     container_name: food-anywhere-celery-beat
     command: sh ./docker/scripts/celery.sh
-    build:
-      context: .
-      dockerfile: ./docker/Dockerfile
     volumes:
       - .:/src
       - ./logs/celery.log:/var/log/celery-beat.log
