@@ -23,3 +23,8 @@ class Restaurant(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.longitude = self.location.x
+        self.latitude = self.location.y
+        super().save(*args, **kwargs)
