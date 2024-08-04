@@ -41,16 +41,3 @@ def denied_location(django_db_setup, django_db_blocker, user) -> Restaurant:
             location=Point(-73.935242, 40.730610),
             status=RestaurantStatus.DENIED,
         )
-
-
-@pytest.fixture(scope="session")
-def cancelled_location(django_db_setup, django_db_blocker, user) -> Restaurant:
-    with django_db_blocker.unblock():
-        yield Restaurant.objects.create(
-            user=user,
-            name="Cancelled Location",
-            description="Cancelled Location Description",
-            phone="987654321",
-            location=Point(-73.935242, 40.730610),
-            status=RestaurantStatus.CANCELLED,
-        )

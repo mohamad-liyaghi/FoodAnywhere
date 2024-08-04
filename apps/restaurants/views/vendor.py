@@ -16,6 +16,17 @@ from restaurants.serializers import RestaurantSerializer
         },
         tags=["Vendor Restaurants"],
     ),
+    post=extend_schema(
+        summary="Create a restaurant",
+        description="Create a new restaurant.",
+        request=RestaurantSerializer,
+        responses={
+            201: RestaurantSerializer,
+            400: OpenApiResponse(description="Bad request"),
+            403: OpenApiResponse(description="Unauthorized"),
+        },
+        tags=["Vendor Restaurants"],
+    ),
 )
 class VendorRestaurantListCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
@@ -23,3 +34,6 @@ class VendorRestaurantListCreateView(ListCreateAPIView):
 
     def get_queryset(self):
         return Restaurant.objects.select_related("owner").filter(owner=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user, status=RestaurantStatus.REQUESTED)

@@ -4,7 +4,7 @@ from restaurants.views.vendor import VendorRestaurantListCreateView
 app_name = "restaurants"
 
 VENDOR_URLS = [
-    path("", VendorRestaurantListCreateView.as_view(), name="vendor-list"),
+    path("", VendorRestaurantListCreateView.as_view(), name="vendor-list-create"),
 ]
 CUSTOMER_URLS = []
 

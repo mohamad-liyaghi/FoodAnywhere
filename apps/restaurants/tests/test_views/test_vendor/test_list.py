@@ -7,7 +7,7 @@ from rest_framework import status
 class TestVendorRestaurantListView:
     @pytest.fixture(autouse=True)
     def setup(self, api_client):
-        self.url = reverse("restaurants:vendor-list")
+        self.url = reverse("restaurants:vendor-list-create")
         self.client = api_client
 
     def test_retrieve_list_unauthorized_fails(self):
