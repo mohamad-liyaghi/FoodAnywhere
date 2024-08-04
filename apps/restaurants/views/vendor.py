@@ -29,7 +29,7 @@ from restaurants.serializers import RestaurantSerializer
         tags=["Vendor Restaurants"],
     ),
 )
-class VendorRestaurantListCreateView(ListCreateAPIView):
+class RestaurantListCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = RestaurantSerializer
 
@@ -74,7 +74,7 @@ class VendorRestaurantListCreateView(ListCreateAPIView):
         tags=["Vendor Restaurants"],
     ),
 )
-class VendorRestaurantView(RetrieveUpdateDestroyAPIView):
+class RestaurantView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = RestaurantSerializer
 

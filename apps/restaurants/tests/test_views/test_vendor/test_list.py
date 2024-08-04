@@ -4,7 +4,7 @@ from rest_framework import status
 
 
 @pytest.mark.django_db
-class TestVendorRestaurantListView:
+class TestRestaurantListView:
     @pytest.fixture(autouse=True)
     def setup(self, api_client):
         self.url = reverse("restaurants:vendor-list-create")

@@ -1,14 +1,14 @@
 from django.urls import path, include
 from restaurants.views.vendor import (
-    VendorRestaurantListCreateView,
-    VendorRestaurantView,
+    RestaurantListCreateView,
+    RestaurantView,
 )
 
 app_name = "restaurants"
 
 VENDOR_URLS = [
-    path("", VendorRestaurantListCreateView.as_view(), name="vendor-list-create"),
-    path("<uuid:uuid>/", VendorRestaurantView.as_view(), name="vendor-detail"),
+    path("", RestaurantListCreateView.as_view(), name="vendor-list-create"),
+    path("<uuid:uuid>/", RestaurantView.as_view(), name="vendor-detail"),
 ]
 CUSTOMER_URLS = []
 

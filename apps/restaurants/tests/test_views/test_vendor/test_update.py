@@ -4,7 +4,7 @@ from rest_framework import status
 
 
 @pytest.mark.django_db
-class TestProfileRestaurantView:
+class TestRestaurantUpdateView:
     @pytest.fixture(autouse=True)
     def setup_method(self, user, api_client, request_restaurant):
         self.url = reverse("restaurants:vendor-detail", kwargs={"uuid": request_restaurant.uuid})
