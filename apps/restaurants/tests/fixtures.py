@@ -5,10 +5,10 @@ from restaurants.enums import RestaurantStatus
 
 
 @pytest.fixture(scope="session")
-def request_location(django_db_setup, django_db_blocker, user) -> Restaurant:
+def request_restaurant(django_db_setup, django_db_blocker, user) -> Restaurant:
     with django_db_blocker.unblock():
         yield Restaurant.objects.create(
-            user=user,
+            owner=user,
             name="Request Location",
             description="Request Location Description",
             phone="123456789",
@@ -18,10 +18,10 @@ def request_location(django_db_setup, django_db_blocker, user) -> Restaurant:
 
 
 @pytest.fixture(scope="session")
-def approved_location(django_db_setup, django_db_blocker, user) -> Restaurant:
+def approved_restaurant(django_db_setup, django_db_blocker, user) -> Restaurant:
     with django_db_blocker.unblock():
         yield Restaurant.objects.create(
-            user=user,
+            owner=user,
             name="Approved Location",
             description="Approved Location Description",
             phone="987654321",
@@ -31,10 +31,10 @@ def approved_location(django_db_setup, django_db_blocker, user) -> Restaurant:
 
 
 @pytest.fixture(scope="session")
-def denied_location(django_db_setup, django_db_blocker, user) -> Restaurant:
+def denied_restaurant(django_db_setup, django_db_blocker, user) -> Restaurant:
     with django_db_blocker.unblock():
         yield Restaurant.objects.create(
-            user=user,
+            owner=user,
             name="Rejected Location",
             description="Rejected Location Description",
             phone="123456789",
