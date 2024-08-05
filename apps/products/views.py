@@ -73,15 +73,44 @@ class ProductListCreateView(ListCreateAPIView):
             404: OpenApiResponse(description="Not found"),
         },
         tags=["Products"],
-    )
+    ),
+    put=extend_schema(
+        summary="Update a product by its owner",
+        description="Update a product",
+        responses={
+            200: ProductSerializer,
+            400: OpenApiResponse(description="Bad request"),
+            403: OpenApiResponse(description="Authentication credentials were not provided"),
+            404: OpenApiResponse(description="Not found"),
+        },
+        tags=["Products"],
+    ),
+    patch=extend_schema(
+        summary="Update a product by its owner",
+        description="Update a product",
+        responses={
+            200: ProductSerializer,
+            400: OpenApiResponse(description="Bad request"),
+            403: OpenApiResponse(description="Authentication credentials were not provided"),
+            404: OpenApiResponse(description="Not found"),
+        },
+        tags=["Products"],
+    ),
 )
 class ProductDetailView(RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
+        if self.request.method == "GET":
+            return get_object_or_404(
+                Product.objects.select_related("restaurant"),
+                uuid=self.kwargs["product_uuid"],
+                restaurant__uuid=self.kwargs["restaurant_uuid"],
+            )
         return get_object_or_404(
             Product.objects.select_related("restaurant"),
             uuid=self.kwargs["product_uuid"],
             restaurant__uuid=self.kwargs["restaurant_uuid"],
+            restaurant__owner=self.request.user,
         )
