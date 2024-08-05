@@ -14,5 +14,9 @@ class Product(models.Model):
     max_quantity_per_order = models.PositiveIntegerField()
     type = models.CharField(max_length=1, choices=ProductType.choices)
 
+    @property
+    def is_available(self):
+        return self.quantity > 0
+
     def __str__(self):
         return self.name
