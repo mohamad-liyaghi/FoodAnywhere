@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema_view, OpenApiResponse, extend_schema
 from products.models import Product
@@ -61,3 +61,27 @@ class ProductListCreateView(ListCreateAPIView):
         context["restaurant"] = self._get_restaurant(for_creation=True)
         context["request"] = self.request
         return context
+
+
+@extend_schema_view(
+    get=extend_schema(
+        summary="Get a product",
+        description="Retrieve a product",
+        responses={
+            200: ProductSerializer,
+            403: OpenApiResponse(description="Authentication credentials were not provided"),
+            404: OpenApiResponse(description="Not found"),
+        },
+        tags=["Products"],
+    )
+)
+class ProductDetailView(RetrieveUpdateDestroyAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return get_object_or_404(
+            Product.objects.select_related("restaurant"),
+            uuid=self.kwargs["product_uuid"],
+            restaurant__uuid=self.kwargs["restaurant_uuid"],
+        )
