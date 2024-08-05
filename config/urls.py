@@ -9,6 +9,7 @@ urlpatterns = [
     path("active_sessions/", include("active_sessions.urls")),
     path("locations/", include("locations.urls")),
     path("restaurants/", include("restaurants.urls")),
+    path("products/", include("products.urls")),
 ]
 
 if settings.DEBUG:

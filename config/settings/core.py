@@ -17,6 +17,7 @@ LOCAL_APPS = [
     "apps.users.apps.UsersConfig",
     "apps.locations.apps.LocationsConfig",
     "apps.restaurants.apps.RestaurantsConfig",
+    "apps.products.apps.ProductsConfig",
 ]
 THIRD_PARTY_APPS = [
     "rest_framework",
