@@ -1,7 +1,9 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from uuid import uuid4
 from products.enums import ProductType
 from restaurants.models import Restaurant
+from restaurants.enums import RestaurantStatus
 
 
 class Product(models.Model):
@@ -20,3 +22,12 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    # restaurant should be approved
+    def clean(self):
+        if self.restaurant.status != RestaurantStatus.APPROVED:
+            raise ValidationError("Restaurant is not approved")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
