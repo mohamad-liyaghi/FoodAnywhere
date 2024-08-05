@@ -15,6 +15,7 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField()
     max_quantity_per_order = models.PositiveIntegerField()
     type = models.CharField(max_length=1, choices=ProductType.choices)
+    is_deleted = models.BooleanField(default=False)
 
     @property
     def is_available(self):

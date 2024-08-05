@@ -113,3 +113,17 @@ def unavailable_other_product(django_db_setup, django_db_blocker, approved_resta
             max_quantity_per_order=5,
             type=ProductType.OTHER,
         )
+
+
+@pytest.fixture(scope="session")
+def available_food_to_delete(django_db_setup, django_db_blocker, approved_restaurant) -> Product:
+    with django_db_blocker.unblock():
+        yield Product.objects.create(
+            restaurant=approved_restaurant,
+            name="Available Food Product",
+            description="Available Food Product Description",
+            price=10.00,
+            quantity=10,
+            max_quantity_per_order=5,
+            type=ProductType.FOOD,
+        )

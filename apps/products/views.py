@@ -38,7 +38,7 @@ class ProductListCreateView(ListCreateAPIView):
     def get_queryset(self):
         restaurant = self._get_restaurant()
         return Product.objects.select_related("restaurant", "restaurant__owner").filter(
-            restaurant=restaurant
+            restaurant=restaurant, is_deleted=False
         )  # TODO: make this single query
 
     def _get_restaurant(self, for_creation=False):
@@ -96,6 +96,16 @@ class ProductListCreateView(ListCreateAPIView):
         },
         tags=["Products"],
     ),
+    delete=extend_schema(
+        summary="Delete a product by its owner",
+        description="Delete a product",
+        responses={
+            204: OpenApiResponse(description="No content"),
+            403: OpenApiResponse(description="Authentication credentials were not provided"),
+            404: OpenApiResponse(description="Not found"),
+        },
+        tags=["Products"],
+    ),
 )
 class ProductDetailView(RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
@@ -107,10 +117,16 @@ class ProductDetailView(RetrieveUpdateDestroyAPIView):
                 Product.objects.select_related("restaurant"),
                 uuid=self.kwargs["product_uuid"],
                 restaurant__uuid=self.kwargs["restaurant_uuid"],
+                is_deleted=False,
             )
         return get_object_or_404(
             Product.objects.select_related("restaurant"),
             uuid=self.kwargs["product_uuid"],
             restaurant__uuid=self.kwargs["restaurant_uuid"],
             restaurant__owner=self.request.user,
+            is_deleted=False,
         )
+
+    def perform_destroy(self, instance):
+        instance.is_deleted = True
+        instance.save()
