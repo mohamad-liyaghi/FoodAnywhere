@@ -19,17 +19,45 @@ from products.serializers import ProductSerializer
         },
         tags=["Products"],
     ),
+    post=extend_schema(
+        summary="Create a product for a restaurant",
+        description="Create a product for a restaurant",
+        responses={
+            201: ProductSerializer,
+            400: OpenApiResponse(description="Bad request"),
+            403: OpenApiResponse(description="Authentication credentials were not provided"),
+            404: OpenApiResponse(description="Restaurant not found"),
+        },
+        tags=["Products"],
+    ),
 )
 class ProductListCreateView(ListCreateAPIView):
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        restaurant = get_object_or_404(
-            Restaurant,
-            uuid=self.kwargs["restaurant_uuid"],
-            status=RestaurantStatus.APPROVED,
-        )
+        restaurant = self._get_restaurant()
         return Product.objects.select_related("restaurant", "restaurant__owner").filter(
             restaurant=restaurant
         )  # TODO: make this single query
+
+    def _get_restaurant(self, for_creation=False):
+        if not for_creation:
+            return get_object_or_404(
+                Restaurant,
+                uuid=self.kwargs["restaurant_uuid"],
+                status=RestaurantStatus.APPROVED,
+            )
+
+        return get_object_or_404(
+            Restaurant,
+            uuid=self.kwargs["restaurant_uuid"],
+            status=RestaurantStatus.APPROVED,
+            owner=self.request.user,
+        )
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["restaurant"] = self._get_restaurant(for_creation=True)
+        context["request"] = self.request
+        return context

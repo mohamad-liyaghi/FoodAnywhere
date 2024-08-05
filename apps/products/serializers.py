@@ -19,3 +19,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "is_available",
         )
         read_only_fields = ("uuid", "is_available")
+
+    def create(self, validated_data) -> Product:
+        validated_data.setdefault("restaurant", self.context["restaurant"])
+        return super().create(validated_data)
