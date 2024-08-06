@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.views import APIView
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
@@ -32,15 +32,18 @@ from carts.serializers import CartSerializer
         tags=["Cart"],
     ),
 )
-class CartListCreateView(APIView):
+class CartListCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = CartSerializer
+
+    def get_queryset(self):
+        return CartService.get_items(user=self.request.user)
 
     def get_object(self, product_id):
         return get_object_or_404(Product, id=product_id, is_deleted=False)
 
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         try:
             response = CartService.add_item(
@@ -55,6 +58,6 @@ class CartListCreateView(APIView):
             )
         return Response(response, status=status.HTTP_201_CREATED)
 
-    def get(self, request):
-        response = CartService.get_items(user=request.user)
+    def list(self, request, *args, **kwargs):
+        response = self.get_queryset()
         return Response(response, status=status.HTTP_200_OK)
