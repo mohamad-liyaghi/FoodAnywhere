@@ -3,7 +3,7 @@ from decouple import config
 from django.core.cache import cache
 from users.models import User
 from products.models import Product
-from carts.exceptions import MaximumQuantityExceeded
+from carts.exceptions import MaximumQuantityExceeded, ProductNotInCart
 
 
 class CartService:
@@ -30,6 +30,24 @@ class CartService:
                 "product_id": product.id,
             }
 
+        cache.set(cache_key, json.dumps(cart_item))
+        return cart_item
+
+    @staticmethod
+    def update_item(user: User, product: Product, quantity: int) -> dict:
+        """
+        Update an item in the user's cart
+        """
+        if quantity > product.max_quantity_per_order:
+            raise MaximumQuantityExceeded
+
+        cache_key = config("CART_CACHE_KEY").format(user_id=user.id, product_id=product.id)
+        cart_item = cache.get(cache_key)
+        if not cart_item:
+            raise ProductNotInCart
+
+        cart_item = json.loads(cart_item)
+        cart_item["quantity"] = quantity
         cache.set(cache_key, json.dumps(cart_item))
         return cart_item
 
