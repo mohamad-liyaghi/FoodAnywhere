@@ -23,7 +23,7 @@ class TestCarItemUpdateView:
         CartService.add_item(self.user, self.product, 1)
         response = self.client.put(
             self.url,
-            data={"quantity": 100000},
+            data={"quantity": 20},
             format="json",
         )
         assert response.status_code == status.HTTP_400_BAD_REQUEST

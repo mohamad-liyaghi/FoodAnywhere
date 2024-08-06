@@ -9,11 +9,8 @@ class CartSerializer(serializers.Serializer):
         slug_field="uuid",
         write_only=True,
     )
-    quantity = serializers.IntegerField()
+    quantity = serializers.IntegerField(min_value=1, max_value=20)
 
 
 class CartItemUpdateSerializer(serializers.Serializer):
-    quantity = serializers.IntegerField()
-
-
-# TODO: Validator
+    quantity = serializers.IntegerField(min_value=1, max_value=20)
