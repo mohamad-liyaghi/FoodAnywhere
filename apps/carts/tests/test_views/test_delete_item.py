@@ -7,7 +7,7 @@ from carts.services import CartService
 
 
 @pytest.mark.django_db
-class TestCarDeleteItemView:
+class TestCartDeleteItemView:
     @pytest.fixture(autouse=True)
     def setup(self, api_client, available_food_product, user):
         self.url = reverse("carts:update-delete", kwargs={"product_uuid": available_food_product.uuid})
