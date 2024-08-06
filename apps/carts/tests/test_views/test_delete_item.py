@@ -10,7 +10,7 @@ from carts.services import CartService
 class TestCarDeleteItemView:
     @pytest.fixture(autouse=True)
     def setup(self, api_client, available_food_product, user):
-        self.url = reverse("carts:delete", kwargs={"product_uuid": available_food_product.uuid})
+        self.url = reverse("carts:update-delete", kwargs={"product_uuid": available_food_product.uuid})
         self.client = api_client
         self.user = user
         self.product = available_food_product
@@ -27,7 +27,10 @@ class TestCarDeleteItemView:
         assert not cache.get(config("CART_CACHE_KEY").format(user_id=self.user.id, product_id=self.product.id))
 
     def test_delete_deleted_product_fails(self, available_food_to_delete):
-        url = reverse("carts:delete", kwargs={"product_uuid": available_food_to_delete.uuid})
+        url = reverse(
+            "carts:update-delete",
+            kwargs={"product_uuid": available_food_to_delete.uuid},
+        )
         available_food_to_delete.is_deleted = True
         available_food_to_delete.save()
         self.client.force_authenticate(user=self.user)

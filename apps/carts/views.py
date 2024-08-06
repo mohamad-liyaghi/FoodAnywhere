@@ -1,13 +1,14 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.generics import ListCreateAPIView, DestroyAPIView
+from rest_framework.generics import ListCreateAPIView
+from carts.generics import UpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema_view, OpenApiResponse, extend_schema
 from carts.services import CartService
 from products.models import Product
-from carts.exceptions import MaximumQuantityExceeded
-from carts.serializers import CartSerializer
+from carts.exceptions import MaximumQuantityExceeded, ProductNotInCart
+from carts.serializers import CartSerializer, CartItemUpdateSerializer
 
 
 @extend_schema_view(
@@ -61,6 +62,30 @@ class CartListCreateView(ListCreateAPIView):
 
 
 @extend_schema_view(
+    put=extend_schema(
+        summary="Update product quantity in cart",
+        description="Update product quantity in cart",
+        request=CartItemUpdateSerializer,
+        responses={
+            200: OpenApiResponse(description="Product quantity updated"),
+            400: OpenApiResponse(description="Bad Request or Maximum quantity exceeded"),
+            403: OpenApiResponse(description="Authentication credentials were not provided"),
+            404: OpenApiResponse(description="Not found"),
+        },
+        tags=["Cart"],
+    ),
+    patch=extend_schema(
+        summary="Update product quantity in cart",
+        description="Update product quantity in cart",
+        request=CartItemUpdateSerializer,
+        responses={
+            200: OpenApiResponse(description="Product quantity updated"),
+            400: OpenApiResponse(description="Bad Request or Maximum quantity exceeded"),
+            403: OpenApiResponse(description="Authentication credentials were not provided"),
+            404: OpenApiResponse(description="Not found"),
+        },
+        tags=["Cart"],
+    ),
     delete=extend_schema(
         summary="Remove product from cart",
         description="Remove product from cart",
@@ -72,9 +97,9 @@ class CartListCreateView(ListCreateAPIView):
         tags=["Cart"],
     ),
 )
-class CartDestroyView(DestroyAPIView):
+class CartUpdateDestroyView(UpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = CartSerializer
+    serializer_class = CartItemUpdateSerializer
 
     def get_object(self):
         product = get_object_or_404(Product, uuid=self.kwargs["product_uuid"], is_deleted=False)
@@ -83,3 +108,25 @@ class CartDestroyView(DestroyAPIView):
     def perform_destroy(self, instance):
         CartService.remove_item(user=self.request.user, product=instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            response = CartService.update_item(
+                user=self.request.user,
+                product=self.get_object(),
+                quantity=serializer.validated_data["quantity"],
+            )
+        except MaximumQuantityExceeded:
+            return Response(
+                {"error": "Maximum quantity exceeded"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        except ProductNotInCart:
+            return Response(
+                {"error": "Product not in cart"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        return Response(response, status=status.HTTP_200_OK)

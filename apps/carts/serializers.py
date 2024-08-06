@@ -10,3 +10,10 @@ class CartSerializer(serializers.Serializer):
         write_only=True,
     )
     quantity = serializers.IntegerField()
+
+
+class CartItemUpdateSerializer(serializers.Serializer):
+    quantity = serializers.IntegerField()
+
+
+# TODO: Validator
