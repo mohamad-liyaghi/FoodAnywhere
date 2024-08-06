@@ -44,3 +44,11 @@ class CartService:
             item = json.loads(cache.get(item))
             items[item["product_id"]] = item
         return items
+
+    @staticmethod
+    def remove_item(user: User, product: Product) -> None:
+        """
+        Remove an item from the user's cart
+        """
+        cache_key = config("CART_CACHE_KEY").format(user_id=user.id, product_id=product.id)
+        cache.delete(cache_key)
