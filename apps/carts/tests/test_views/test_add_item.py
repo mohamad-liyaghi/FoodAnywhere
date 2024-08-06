@@ -12,7 +12,7 @@ class TestCartAddItemView:
         self.user = user
         self.product = available_food_product
         self.data = {
-            "product_id": available_food_product.id,
+            "product": available_food_product.uuid,
             "quantity": 1,
         }
 
@@ -37,3 +37,11 @@ class TestCartAddItemView:
         response = self.client.post(self.url, data=self.data)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data == {"error": "Maximum quantity exceeded"}
+
+    def test_add_deleted_product_fails(self, available_food_to_delete):
+        available_food_to_delete.is_deleted = True
+        available_food_to_delete.save()
+        self.client.force_authenticate(user=self.user)
+        self.data["product"] = available_food_to_delete.uuid
+        response = self.client.post(self.url, data=self.data)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST

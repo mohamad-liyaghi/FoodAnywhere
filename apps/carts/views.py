@@ -39,15 +39,12 @@ class CartListCreateView(ListCreateAPIView):
     def get_queryset(self):
         return CartService.get_items(user=self.request.user)
 
-    def get_object(self, product_id):
-        return get_object_or_404(Product, id=product_id, is_deleted=False)
-
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         try:
             response = CartService.add_item(
-                product=self.get_object(serializer.validated_data["product_id"]),
+                product=serializer.validated_data["product"],
                 quantity=serializer.validated_data["quantity"],
                 user=request.user,
             )
