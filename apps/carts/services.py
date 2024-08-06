@@ -18,6 +18,7 @@ class CartService:
             raise MaximumQuantityExceeded
         cache_key = config("CART_CACHE_KEY").format(user_id=user.id, product_id=product.id)
         cart_item = cache.get(cache_key)
+        print(cart_item)
         if cart_item:
             cart_item = json.loads(cart_item)
             if cart_item["quantity"] >= product.max_quantity_per_order:
