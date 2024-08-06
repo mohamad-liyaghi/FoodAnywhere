@@ -1,5 +1,6 @@
 import pytest  # noqa
 from rest_framework.test import APIClient
+from django.core.cache import cache
 from config.celery import celery
 from apps.users.tests.fixtures import *  # noqa
 from apps.active_sessions.tests.fixtures import *  # noqa
@@ -21,3 +22,13 @@ def disable_celery_tasks():
     celery.conf.CELERY_ALWAYS_EAGER = True
     yield
     celery.conf.CELERY_ALWAYS_EAGER = False
+
+
+@pytest.fixture(autouse=True, scope="class")
+def clear_cache():
+    """
+    Clear cache for all tests.
+    """
+    cache.clear()
+    yield
+    cache.clear()
