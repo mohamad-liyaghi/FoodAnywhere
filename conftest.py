@@ -24,7 +24,7 @@ def disable_celery_tasks():
     celery.conf.CELERY_ALWAYS_EAGER = False
 
 
-@pytest.fixture(autouse=True, scope="session")
+@pytest.fixture(autouse=True, scope="class")
 def clear_cache():
     """
     Clear cache for all tests.

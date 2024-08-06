@@ -13,11 +13,19 @@ class TestCartAddItem:
 
     def test_add_item(self):
         result = CartService.add_item(self.user, self.product, self.quantity)
-        assert result == {"is_available": True, "quantity": 1}
+        assert result == {
+            "is_available": True,
+            "quantity": 1,
+            "product_id": self.product.id,
+        }
 
     def test_add_item_twice_should_increment_quantity(self):
         result = CartService.add_item(self.user, self.product, self.quantity)
-        assert result == {"is_available": True, "quantity": 2}
+        assert result == {
+            "is_available": True,
+            "quantity": 2,
+            "product_id": self.product.id,
+        }
 
     def test_add_item_more_than_max_quantity_per_order_fails(self):
         with pytest.raises(MaximumQuantityExceeded):
