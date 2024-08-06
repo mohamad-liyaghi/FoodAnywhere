@@ -22,6 +22,15 @@ from carts.serializers import CartSerializer
         },
         tags=["Cart"],
     ),
+    get=extend_schema(
+        summary="Get cart items",
+        description="Get cart items",
+        responses={
+            200: OpenApiResponse(description="Cart items"),
+            403: OpenApiResponse(description="Authentication credentials were not provided"),
+        },
+        tags=["Cart"],
+    ),
 )
 class CartListCreateView(APIView):
     permission_classes = [IsAuthenticated]
@@ -45,3 +54,7 @@ class CartListCreateView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
         return Response(response, status=status.HTTP_201_CREATED)
+
+    def get(self, request):
+        response = CartService.get_items(user=request.user)
+        return Response(response, status=status.HTTP_200_OK)
