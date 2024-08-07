@@ -12,7 +12,7 @@ class Transaction(models.Model):
     status = models.CharField(max_length=20, choices=TransactionStatus.choices)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_added_to_balance = models.BooleanField(default=False, editable=False)
+    is_processed = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.id} - {self.user} - {self.amount} - {self.type} - {self.status}"
