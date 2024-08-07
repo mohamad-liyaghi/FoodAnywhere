@@ -18,3 +18,15 @@ class DepositLimitPermission(BasePermission):
             type=TransactionType.DEPOSIT,
         ).count()
         return pending_deposits <= 3
+
+
+class WithdrawalLimitPermission(BasePermission):
+    message = "You can't create more than 3 pending withdrawals"
+
+    def has_permission(self, request, view):
+        pending_withdrawals = Transaction.objects.filter(
+            user=request.user,
+            status=TransactionStatus.PENDING,
+            type=TransactionType.WITHDRAWAL,
+        ).count()
+        return pending_withdrawals <= 3
