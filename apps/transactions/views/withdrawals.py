@@ -18,6 +18,15 @@ from transactions.serializers import WithdrawalSerializer
         },
         tags=["Withdrawals"],
     ),
+    get=extend_schema(
+        summary="List all transactions",
+        description="List all transactions for the user",
+        responses={
+            200: WithdrawalSerializer(many=True),
+            403: OpenApiResponse(description="Unauthorized"),
+        },
+        tags=["Withdrawals"],
+    ),
 )
 class WithdrawalListCreateView(ListCreateAPIView):
     permission_classes = (IsAuthenticated, WithdrawalLimitPermission)
@@ -30,3 +39,10 @@ class WithdrawalListCreateView(ListCreateAPIView):
         context = super().get_serializer_context()
         context["user"] = self.request.user
         return context
+
+    def get_queryset(self):
+        return (
+            Transaction.objects.select_related("user")
+            .filter(user=self.request.user, type=TransactionType.WITHDRAWAL)
+            .order_by("-created_at")
+        )
