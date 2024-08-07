@@ -14,3 +14,10 @@ DATABASES = {
         "PORT": config("POSTGRES_PORT"),
     }
 }
+
+CELERY_BEAT_SCHEDULE = {
+    "auto_expire_transactions": {
+        "task": "apps.transactions.tasks.auto_expire_transactions",
+        "schedule": timedelta(minutes=20),
+    },
+}

@@ -2,13 +2,15 @@ from django.db import models
 
 
 class TransactionType(models.TextChoices):
-    DEPOSIT = "deposit"
-    WITHDRAWAL = "withdrawal"
-    REFUND = "refund"
+    DEPOSIT = ("d", "Deposit")
+    WITHDRAWAL = ("w", "Withdrawal")
+    CHARGE = ("c", "Charge")
+    COST = ("o", "Cost")
 
 
 class TransactionStatus(models.TextChoices):
-    PENDING = "pending"
-    SUCCESS = "success"
-    FAILED = "failed"
-    CANCELLED = "cancelled"
+    PENDING = ("p", "Pending")
+    SUCCESS = ("s", "Success")
+    FAILED = ("f", "Failed")
+    CANCELLED = ("c", "Cancelled")
+    EXPIRED = ("e", "Expired")
