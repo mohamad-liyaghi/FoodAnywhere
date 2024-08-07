@@ -20,3 +20,10 @@ INTERNAL_IPS = ["127.0.0.1"]
 DEBUG_TOOLBAR_CONFIG = {"SHOW_TOOLBAR_CALLBACK": lambda _request: DEBUG}
 INSTALLED_APPS += ["debug_toolbar"]
 MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+
+CELERY_BEAT_SCHEDULE = {
+    "auto_expire_transactions": {
+        "task": "apps.transactions.tasks.auto_expire_transactions",
+        "schedule": timedelta(minutes=20),
+    },
+}

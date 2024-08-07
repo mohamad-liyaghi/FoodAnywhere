@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from uuid import uuid4
 from transactions.enums import TransactionType, TransactionStatus
+from transactions.tasks import do_withdraw
 
 
 class Transaction(models.Model):
@@ -33,3 +34,4 @@ class Transaction(models.Model):
     def _handle_withdrawal(self):
         self.user.balance -= self.amount
         self.user.save()
+        do_withdraw.delay(self.user.id, self.id)
