@@ -1,7 +1,7 @@
 from django.utils import timezone
+from django.apps import apps
 from celery import shared_task
 from datetime import timedelta
-from transactions.models import Transaction
 from transactions.enums import TransactionStatus
 
 
@@ -12,6 +12,7 @@ def do_withdraw(user_id, transaction_id) -> str:
 
 @shared_task
 def auto_expire_transactions() -> str:
+    Transaction = apps.get_model("transactions", "Transaction")  # noqa
     twenty_minutes_ago = timezone.now() - timedelta(minutes=20)
     transactions = Transaction.objects.filter(
         created_at__lte=twenty_minutes_ago,
