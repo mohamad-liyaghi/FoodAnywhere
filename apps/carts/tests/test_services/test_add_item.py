@@ -17,6 +17,7 @@ class TestCartAddItem:
             "is_available": True,
             "quantity": 1,
             "product_id": self.product.id,
+            "restaurant_id": self.product.restaurant_id,
         }
 
     def test_add_item_twice_should_increment_quantity(self):
@@ -25,6 +26,7 @@ class TestCartAddItem:
             "is_available": True,
             "quantity": 2,
             "product_id": self.product.id,
+            "restaurant_id": self.product.restaurant_id,
         }
 
     def test_add_item_more_than_max_quantity_per_order_fails(self):

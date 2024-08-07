@@ -28,6 +28,7 @@ class CartService:
                 "is_available": product.is_available,
                 "quantity": quantity,
                 "product_id": product.id,
+                "restaurant_id": product.restaurant_id,
             }
 
         cache.set(cache_key, json.dumps(cart_item))
