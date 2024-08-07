@@ -3,7 +3,7 @@ from django.db import models
 
 class TransactionType(models.TextChoices):
     DEPOSIT = "deposit"
-    WITHDRAW = "withdraw"
+    WITHDRAWAL = "withdrawal"
     REFUND = "refund"
 
 

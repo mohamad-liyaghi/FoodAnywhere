@@ -16,3 +16,20 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"{self.id} - {self.user} - {self.amount} - {self.type} - {self.status}"
+
+    def save(self, *args, **kwargs):
+        if self.status == TransactionStatus.SUCCESS and not self.is_processed:
+            if self.type == TransactionType.DEPOSIT:
+                self._handle_deposit()
+            elif self.type == TransactionType.WITHDRAWAL:
+                self._handle_withdrawal()
+            self.is_processed = True
+        return super().save(*args, **kwargs)
+
+    def _handle_deposit(self):
+        self.user.balance += self.amount
+        self.user.save()
+
+    def _handle_withdrawal(self):
+        self.user.balance -= self.amount
+        self.user.save()
