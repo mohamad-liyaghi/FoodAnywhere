@@ -20,6 +20,7 @@ LOCAL_APPS = [
     "apps.products.apps.ProductsConfig",
     "apps.carts.apps.CartsConfig",
     "apps.transactions.apps.TransactionsConfig",
+    "apps.orders.apps.OrdersConfig",
 ]
 THIRD_PARTY_APPS = [
     "rest_framework",
