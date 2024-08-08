@@ -2,7 +2,7 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema_view, OpenApiResponse, extend_schema
 from transactions.models import Transaction
-from transactions.enums import TransactionStatus, TransactionType
+from transactions.enums import TransactionType
 from transactions.permissions import WithdrawalLimitPermission
 from transactions.serializers import WithdrawalSerializer
 
