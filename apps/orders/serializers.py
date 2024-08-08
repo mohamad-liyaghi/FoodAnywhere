@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from carts.services import CartService
+from orders.exceptions import EmptyCartException
 from products.serializers import ProductSerializer
 from users.serializers import UserProfileSerializer
 from restaurants.serializers import RestaurantSerializer
@@ -28,3 +30,11 @@ class OrderSerializer(serializers.ModelSerializer):
             "total_price",
             "items",
         )
+
+    def create(self, validated_data):
+        user = self.context["user"]
+        cart = CartService.get_items(user)
+        try:
+            return Order.create_order(user, cart)
+        except EmptyCartException:
+            raise serializers.ValidationError("Cart is empty")
