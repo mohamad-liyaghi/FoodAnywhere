@@ -65,7 +65,7 @@ class OrderListCreateView(ListCreateAPIView):
 class OrderPayView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    def get_object(self, pk):
+    def get_object(self):
         return get_object_or_404(
             Order,
             uuid=self.kwargs["uuid"],
@@ -73,8 +73,8 @@ class OrderPayView(APIView):
             status=OrderStatus.PENDING_PAYMENT,
         )
 
-    def post(self, request, uuid):
-        order = self.get_object(uuid)
+    def post(self, request, *args, **kwargs):
+        order = self.get_object()
         try:
             order.status = OrderStatus.PROCESSING
             order.save()
@@ -82,3 +82,33 @@ class OrderPayView(APIView):
 
         except InsufficientBalanceException:
             return Response({"error": "Insufficient balance"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@extend_schema_view(
+    delete=extend_schema(
+        summary="Cancel an order",
+        description="Cancel an order",
+        responses={
+            204: OpenApiResponse(description="Cancelled"),
+            400: OpenApiResponse(description="Bad Request"),
+            403: OpenApiResponse(description="Unauthorized"),
+        },
+        tags=["Customer Orders"],
+    ),
+)
+class OrderCancelView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self):
+        return get_object_or_404(
+            Order,
+            uuid=self.kwargs["uuid"],
+            user=self.request.user,
+            status=OrderStatus.PENDING_PAYMENT,
+        )
+
+    def delete(self, request, *args, **kwargs):
+        order = self.get_object()
+        order.status = OrderStatus.CANCELLED
+        order.save()
+        return Response({"message": "Order has been cancelled"}, status=status.HTTP_204_NO_CONTENT)
