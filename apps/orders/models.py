@@ -2,9 +2,9 @@ from django.db import models, transaction
 from django.core.cache import cache
 from decouple import config
 from django.conf import settings
-from django.db.models import QuerySet, F
+from django.db.models import QuerySet
 from uuid import uuid4
-from orders.exceptions import EmptyCartException
+from orders.exceptions import EmptyCartException, InsufficientBalanceException
 from orders.enums import OrderStatus
 from restaurants.models import Restaurant
 from products.models import Product
@@ -25,6 +25,8 @@ class Order(models.Model):
 
     def save(self, *args, **kwargs):
         if self.status == OrderStatus.PROCESSING and not self.is_removed_from_balance:
+            if self.user.balance < self.total_price:
+                raise InsufficientBalanceException
             self.user.balance -= self.total_price
             self.user.save()
         return super().save(*args, **kwargs)
@@ -74,7 +76,7 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
