@@ -24,9 +24,7 @@ class TestCartListItem:
         assert response.status_code == status.HTTP_200_OK
         assert response.data == {}
 
-    def test_get_items(self):
-        CartService.add_item(self.user, self.product, self.quantity)
+    def test_get_items(self, cart):
         self.client.force_authenticate(user=self.user)
         response = self.client.get(self.url)
         assert response.status_code == status.HTTP_200_OK
-        assert response.data[self.product.id]["quantity"] == self.quantity

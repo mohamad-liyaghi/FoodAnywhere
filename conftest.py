@@ -9,6 +9,7 @@ from apps.restaurants.tests.fixtures import *  # noqa
 from apps.products.tests.fixtures import *  # noqa
 from apps.transactions.tests.fixtures import *  # noqa
 from apps.orders.tests.fixtures import *  # noqa
+from apps.carts.tests.fixtures import *  # noqa
 
 
 @pytest.fixture(scope="class")

@@ -13,9 +13,8 @@ class TestOrderModel:
         with pytest.raises(EmptyCartException):
             Order.create_order(user, {})
 
-    def test_create_only_one_order(self, user, available_food_product):
-        CartService.add_item(user, available_food_product, 1)
-        Order.create_order(user, CartService.get_items(user))
+    def test_create_only_one_order(self, user, available_food_product, cart):
+        Order.create_order(user, cart)
         assert Order.objects.filter(user=user, restaurant=available_food_product.restaurant).exists()
         assert not cache.get(config("CART_CACHE_KEY").format(user_id=user.id, product_id=available_food_product.id))
 

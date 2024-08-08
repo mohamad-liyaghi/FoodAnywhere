@@ -19,8 +19,7 @@ class TestCartDeleteItemView:
         response = self.client.delete(self.url)
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
-    def test_delete_item(self):
-        CartService.add_item(self.user, self.product, 1)
+    def test_delete_item(self, cart):
         self.client.force_authenticate(user=self.user)
         response = self.client.delete(self.url)
         assert response.status_code == status.HTTP_204_NO_CONTENT

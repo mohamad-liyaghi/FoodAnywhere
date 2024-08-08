@@ -23,8 +23,7 @@ class TestOrderCreateView:
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.json() == ["Cart is empty"]
 
-    def test_create_with_items_succeeds(self, available_drink_product):
-        CartService.add_item(self.user, available_drink_product, 2)
+    def test_create_with_items_succeeds(self, cart):
         self.client.force_authenticate(self.user)
         response = self.client.post(self.url, self.data)
         assert response.status_code == status.HTTP_201_CREATED

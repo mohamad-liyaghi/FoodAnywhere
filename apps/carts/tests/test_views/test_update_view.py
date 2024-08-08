@@ -8,9 +8,10 @@ from carts.services import CartService
 @pytest.mark.django_db
 class TestCarItemUpdateView:
     @pytest.fixture(autouse=True)
-    def setup(self, api_client, available_food_product, user):
+    def setup(self, api_client, available_food_product, user, cart):
         self.url = reverse("carts:update-delete", kwargs={"product_uuid": available_food_product.uuid})
         self.client = api_client
+        self.cart = cart
         self.user = user
         self.product = available_food_product
 
@@ -20,12 +21,7 @@ class TestCarItemUpdateView:
 
     def test_update_with_maximum_quantity_fails(self):
         self.client.force_authenticate(user=self.user)
-        CartService.add_item(self.user, self.product, 1)
-        response = self.client.put(
-            self.url,
-            data={"quantity": 20},
-            format="json",
-        )
+        response = self.client.put(self.url, data={"quantity": 20}, format="json")
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data["error"] == "Maximum quantity exceeded"
 
@@ -43,7 +39,6 @@ class TestCarItemUpdateView:
 
     def test_update_item(self):
         self.client.force_authenticate(user=self.user)
-        CartService.add_item(self.user, self.product, 1)
         response = self.client.put(self.url, data={"quantity": 2}, format="json")
         assert response.status_code == status.HTTP_200_OK
         assert response.data["quantity"] == 2

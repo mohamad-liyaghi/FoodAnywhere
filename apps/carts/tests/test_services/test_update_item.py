@@ -6,13 +6,12 @@ from carts.exceptions import MaximumQuantityExceeded, ProductNotInCart
 @pytest.mark.django_db
 class TestCartUpdateItem:
     @pytest.fixture(autouse=True)
-    def setup(self, available_food_product, another_user):
-        self.user = another_user
+    def setup(self, available_food_product, user):
+        self.user = user
         self.product = available_food_product
         self.quantity = 1
 
-    def test_update_item(self):
-        CartService.add_item(self.user, self.product, self.quantity)
+    def test_update_item(self, cart):
         updated_quantity = 2
         result = CartService.update_item(self.user, self.product, updated_quantity)
         assert result["quantity"] == updated_quantity
