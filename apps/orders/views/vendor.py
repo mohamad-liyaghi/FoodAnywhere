@@ -1,5 +1,9 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 from drf_spectacular.utils import extend_schema_view, OpenApiResponse, extend_schema
 from restaurants.models import Restaurant
 from orders.models import Order
@@ -34,3 +38,34 @@ class VendorOrderListView(ListAPIView):
             .filter(restaurant__in=restaurant, status=OrderStatus.PENDING_PAYMENT)
             .order_by("-created_at")
         )
+
+
+@extend_schema_view(
+    post=extend_schema(
+        summary="Pay for an order",
+        description="Pay for an order",
+        responses={
+            200: OrderSerializer(),
+            400: OpenApiResponse(description="Bad Request"),
+            403: OpenApiResponse(description="Unauthorized"),
+        },
+        tags=["Customer Orders"],
+    ),
+)
+class VendorOrderSetShippedView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self):
+        return get_object_or_404(
+            Order,
+            uuid=self.kwargs["uuid"],
+            restaurant__owner=self.request.user,
+            status=OrderStatus.PROCESSING,
+        )
+
+    def post(self, request, *args, **kwargs):
+        order = self.get_object()
+
+        order.status = OrderStatus.SHIPPED
+        order.save()
+        return Response({"message": "Order has been shipped"}, status=status.HTTP_200_OK)
