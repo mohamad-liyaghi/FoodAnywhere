@@ -31,6 +31,19 @@ def approved_restaurant(django_db_setup, django_db_blocker, user) -> Restaurant:
 
 
 @pytest.fixture(scope="session")
+def another_approved_restaurant(django_db_setup, django_db_blocker, user) -> Restaurant:
+    with django_db_blocker.unblock():
+        yield Restaurant.objects.create(
+            owner=user,
+            name="Another Approved",
+            description="Approved Description",
+            phone="987654321",
+            location=Point(-72.935242, 40.730610),
+            status=RestaurantStatus.APPROVED,
+        )
+
+
+@pytest.fixture(scope="session")
 def denied_restaurant(django_db_setup, django_db_blocker, user) -> Restaurant:
     with django_db_blocker.unblock():
         yield Restaurant.objects.create(

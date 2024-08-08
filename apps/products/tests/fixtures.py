@@ -32,10 +32,10 @@ def unavailable_food_product(django_db_setup, django_db_blocker, approved_restau
 
 
 @pytest.fixture(scope="session")
-def available_drink_product(django_db_setup, django_db_blocker, approved_restaurant) -> Product:
+def available_drink_product(django_db_setup, django_db_blocker, another_approved_restaurant) -> Product:
     with django_db_blocker.unblock():
         yield Product.objects.create(
-            restaurant=approved_restaurant,
+            restaurant=another_approved_restaurant,
             name="Available Drink Product",
             description="Available Drink Product Description",
             price=5.00,
