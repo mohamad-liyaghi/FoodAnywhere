@@ -1,4 +1,5 @@
 import pytest
+from decimal import Decimal
 from transactions.models import Transaction
 from transactions.enums import TransactionType, TransactionStatus
 
@@ -13,7 +14,7 @@ class TestTransactionModel:
             type=TransactionType.DEPOSIT,
             status=TransactionStatus.SUCCESS,
         )
-        assert user.balance == user_balance + successful_deposit.amount
+        assert user.balance == user_balance + Decimal(successful_deposit.amount)
 
     def test_user_balance_decreased_after_successful_withdrawal(self, user):
         user_balance = user.balance
@@ -23,4 +24,4 @@ class TestTransactionModel:
             type=TransactionType.WITHDRAWAL,
             status=TransactionStatus.SUCCESS,
         )
-        assert user.balance == user_balance - successful_withdrawal.amount
+        assert user.balance == user_balance - Decimal(successful_withdrawal.amount)
