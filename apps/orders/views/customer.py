@@ -1,6 +1,12 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 from drf_spectacular.utils import extend_schema_view, OpenApiResponse, extend_schema
+from orders.enums import OrderStatus
+from orders.exceptions import InsufficientBalanceException
 from orders.models import Order
 from orders.serializers import OrderSerializer
 
@@ -42,3 +48,37 @@ class OrderListCreateView(ListCreateAPIView):
         context = super().get_serializer_context()
         context["user"] = self.request.user
         return context
+
+
+@extend_schema_view(
+    post=extend_schema(
+        summary="Pay for an order",
+        description="Pay for an order",
+        responses={
+            200: OrderSerializer(),
+            400: OpenApiResponse(description="Bad Request"),
+            403: OpenApiResponse(description="Unauthorized"),
+        },
+        tags=["Customer Orders"],
+    ),
+)
+class OrderPayView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self, pk):
+        return get_object_or_404(
+            Order,
+            uuid=self.kwargs["uuid"],
+            user=self.request.user,
+            status=OrderStatus.PENDING_PAYMENT,
+        )
+
+    def post(self, request, uuid):
+        order = self.get_object(uuid)
+        try:
+            order.status = OrderStatus.PROCESSING
+            order.save()
+            return Response({"message": "Order is being processed"}, status=status.HTTP_200_OK)
+
+        except InsufficientBalanceException:
+            return Response({"error": "Insufficient balance"}, status=status.HTTP_400_BAD_REQUEST)
