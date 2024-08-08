@@ -2,6 +2,7 @@ import pytest
 from django.core.cache import cache
 from decouple import config
 from orders.models import Order, OrderItem
+from orders.enums import OrderStatus
 from orders.exceptions import EmptyCartException
 from carts.services import CartService
 
@@ -25,3 +26,10 @@ class TestOrderModel:
         assert orders.count() == 2
         assert Order.objects.filter(user=user, restaurant=available_food_product.restaurant).exists()
         assert Order.objects.filter(user=user, restaurant=available_drink_product.restaurant).exists()
+
+    def test_remove_total_from_balance(self, pending_order):
+        user_balance = pending_order.user.balance
+        pending_order.status = OrderStatus.PROCESSING
+        pending_order.save()
+        pending_order.user.refresh_from_db()
+        assert pending_order.user.balance == user_balance - pending_order.total_price

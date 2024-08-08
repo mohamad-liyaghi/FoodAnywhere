@@ -1,9 +1,8 @@
-import json
 from django.db import models, transaction
 from django.core.cache import cache
 from decouple import config
 from django.conf import settings
-from django.db.models import QuerySet
+from django.db.models import QuerySet, F
 from uuid import uuid4
 from orders.exceptions import EmptyCartException
 from orders.enums import OrderStatus
@@ -19,9 +18,16 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    is_removed_from_balance = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.id} - {self.user.email} - {self.restaurant.name} - {self.status}"
+
+    def save(self, *args, **kwargs):
+        if self.status == OrderStatus.PROCESSING and not self.is_removed_from_balance:
+            self.user.balance -= self.total_price
+            self.user.save()
+        return super().save(*args, **kwargs)
 
     @classmethod
     def create_order(cls, user: settings.AUTH_USER_MODEL, cart: dict) -> QuerySet:

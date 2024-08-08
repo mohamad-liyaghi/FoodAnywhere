@@ -10,11 +10,13 @@ def pending_order(django_db_setup, django_db_blocker, user, available_food_produ
             user=user,
             status=OrderStatus.PENDING_PAYMENT,
             restaurant=available_food_product.restaurant,
+            total_price=0,
         )
         OrderItem.objects.create(
             order=order,
             product=available_food_product,
             quantity=1,
+            price=available_food_product.price,
         )
         yield order
 
@@ -26,11 +28,13 @@ def processing_order(django_db_setup, django_db_blocker, user, available_food_pr
             user=user,
             status=OrderStatus.PROCESSING,
             restaurant=available_food_product.restaurant,
+            total_price=0,
         )
         OrderItem.objects.create(
             order=order,
             product=available_food_product,
             quantity=1,
+            price=available_food_product.price,
         )
         yield order
 
@@ -42,11 +46,13 @@ def shipped_order(django_db_setup, django_db_blocker, user, available_food_produ
             user=user,
             status=OrderStatus.SHIPPED,
             restaurant=available_food_product.restaurant,
+            total_price=0,
         )
         OrderItem.objects.create(
             order=order,
             product=available_food_product,
             quantity=1,
+            price=available_food_product.price,
         )
         yield order
 
@@ -58,11 +64,13 @@ def delivered_order(django_db_setup, django_db_blocker, user, available_food_pro
             user=user,
             status=OrderStatus.DELIVERED,
             restaurant=available_food_product.restaurant,
+            total_price=0,
         )
         OrderItem.objects.create(
             order=order,
             product=available_food_product,
             quantity=1,
+            price=available_food_product.price,
         )
         yield order
 
@@ -74,10 +82,12 @@ def cancelled_order(django_db_setup, django_db_blocker, user, available_food_pro
             user=user,
             status=OrderStatus.CANCELLED,
             restaurant=available_food_product.restaurant,
+            total_price=0,
         )
         OrderItem.objects.create(
             order=order,
             product=available_food_product,
             quantity=1,
+            price=available_food_product.price,
         )
         yield order
