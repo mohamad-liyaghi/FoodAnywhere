@@ -1,5 +1,10 @@
 from django.urls import path, include
-from orders.views.customer import OrderListCreateView, OrderPayView, OrderCancelView
+from orders.views.customer import (
+    OrderListCreateView,
+    OrderPayView,
+    OrderCancelView,
+    OrderDeliveredView,
+)
 from orders.views.vendor import VendorOrderListView, VendorOrderSetShippedView
 
 app_name = "orders"
@@ -16,6 +21,11 @@ CUSTOMER_URLS = [
     path("", OrderListCreateView.as_view(), name="customer-list-create"),
     path("<uuid:uuid>/pay/", OrderPayView.as_view(), name="customer-pay"),
     path("<uuid:uuid>/cancel/", OrderCancelView.as_view(), name="customer-cancel"),
+    path(
+        "<uuid:uuid>/delivered/",
+        OrderDeliveredView.as_view(),
+        name="customer-delivered",
+    ),
 ]
 
 urlpatterns = [

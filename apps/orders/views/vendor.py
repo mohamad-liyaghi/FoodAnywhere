@@ -42,12 +42,13 @@ class VendorOrderListView(ListAPIView):
 
 @extend_schema_view(
     post=extend_schema(
-        summary="Pay for an order",
-        description="Pay for an order",
+        summary="Set Order As Shipped",
+        description="Set the order as shipped",
         responses={
             200: OrderSerializer(),
             400: OpenApiResponse(description="Bad Request"),
             403: OpenApiResponse(description="Unauthorized"),
+            404: OpenApiResponse(description="Not Found"),
         },
         tags=["Customer Orders"],
     ),

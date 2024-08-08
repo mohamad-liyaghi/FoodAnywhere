@@ -85,6 +85,37 @@ class OrderPayView(APIView):
 
 
 @extend_schema_view(
+    post=extend_schema(
+        summary="Set As Delivered",
+        description="Set an order as delivered",
+        responses={
+            200: OrderSerializer(),
+            400: OpenApiResponse(description="Bad Request"),
+            403: OpenApiResponse(description="Unauthorized"),
+            404: OpenApiResponse(description="Not Found"),
+        },
+        tags=["Customer Orders"],
+    ),
+)
+class OrderDeliveredView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self):
+        return get_object_or_404(
+            Order,
+            uuid=self.kwargs["uuid"],
+            user=self.request.user,
+            status=OrderStatus.SHIPPED,
+        )
+
+    def post(self, request, *args, **kwargs):
+        order = self.get_object()
+        order.status = OrderStatus.DELIVERED
+        order.save()
+        return Response({"message": "Order is being processed"}, status=status.HTTP_200_OK)
+
+
+@extend_schema_view(
     delete=extend_schema(
         summary="Cancel an order",
         description="Cancel an order",
@@ -92,6 +123,7 @@ class OrderPayView(APIView):
             204: OpenApiResponse(description="Cancelled"),
             400: OpenApiResponse(description="Bad Request"),
             403: OpenApiResponse(description="Unauthorized"),
+            404: OpenApiResponse(description="Not Found"),
         },
         tags=["Customer Orders"],
     ),
