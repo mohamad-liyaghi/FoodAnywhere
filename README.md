@@ -25,18 +25,19 @@ FoodAnywhere is a comprehensive platform designed to make food ordering and deli
 Vendors can easily register their restaurants, manage their menus, and add products to the system. Customers, on the other hand, can effortlessly search for nearby restaurants, browse menus, and place orders with just a few clicks.
 
 ## Technologies
-<img style="height:30px;" alt="django" src="https://img.shields.io/badge/Django-030903.svg?style=flat&logo=django&logoColor=green">
-<img style="height:30px;" alt="postgresql" src="https://img.shields.io/badge/PostgreSQL-316192.svg?style=flat&logo=postgresql&logoColor=white">
-<img style="height:30px;" alt="postgis" src="https://img.shields.io/badge/PostGIS-316192.svg?style=flat&logo=postgresql&logoColor=white">
-<img style="height:30px;" alt="docker" src="https://img.shields.io/badge/Docker-2496ED.svg?style=flat&logo=docker&logoColor=white">
-<img style="height:30px;" alt="kubernetes" src="https://img.shields.io/badge/Kubernetes-326CE5.svg?style=flat&logo=kubernetes&logoColor=white">
-<img style="height:30px;" alt="celery" src="https://img.shields.io/badge/Celery-37814A.svg?style=flat&logo=celery&logoColor=white">
-<img style="height:30px;" alt="redis" src="https://img.shields.io/badge/Redis-DC382D.svg?style=flat&logo=redis&logoColor=white">
-<img style="height:30px;" alt="grafana" src="https://img.shields.io/badge/Grafana-F46800.svg?style=flat&logo=grafana&logoColor=white">
-<img style="height:30px;" alt="prometheus" src="https://img.shields.io/badge/Prometheus-E6522C.svg?style=flat&logo=prometheus&logoColor=white">
-<img style="height:30px;" alt="loki" src="https://img.shields.io/badge/Loki-3B2E5A.svg?style=flat&logo=loki&logoColor=white">
-<img style="height:30px;" alt="pytest" src="https://img.shields.io/badge/Pytest-0A9EDC.svg?style=flat&logo=pytest&logoColor=white">
-
+<div>
+  <img style="height:30px;" alt="django" src="https://img.shields.io/badge/Django-030903.svg?style=flat&logo=django&logoColor=green">
+  <img style="height:30px;" alt="postgresql" src="https://img.shields.io/badge/PostgreSQL-316192.svg?style=flat&logo=postgresql&logoColor=white">
+  <img style="height:30px;" alt="postgis" src="https://img.shields.io/badge/PostGIS-316192.svg?style=flat&logo=postgresql&logoColor=white">
+  <img style="height:30px;" alt="docker" src="https://img.shields.io/badge/Docker-2496ED.svg?style=flat&logo=docker&logoColor=white">
+  <img style="height:30px;" alt="kubernetes" src="https://img.shields.io/badge/Kubernetes-326CE5.svg?style=flat&logo=kubernetes&logoColor=white">
+  <img style="height:30px;" alt="celery" src="https://img.shields.io/badge/Celery-37814A.svg?style=flat&logo=celery&logoColor=white">
+  <img style="height:30px;" alt="redis" src="https://img.shields.io/badge/Redis-DC382D.svg?style=flat&logo=redis&logoColor=white">
+  <img style="height:30px;" alt="grafana" src="https://img.shields.io/badge/Grafana-F46800.svg?style=flat&logo=grafana&logoColor=white">
+  <img style="height:30px;" alt="prometheus" src="https://img.shields.io/badge/Prometheus-E6522C.svg?style=flat&logo=prometheus&logoColor=white">
+  <img style="height:30px;" alt="loki" src="https://img.shields.io/badge/Loki-3B2E5A.svg?style=flat&logo=loki&logoColor=white">
+  <img style="height:30px;" alt="pytest" src="https://img.shields.io/badge/Pytest-0A9EDC.svg?style=flat&logo=pytest&logoColor=white">
+</div>
 This project uses <a href="https://docs.djangoproject.com/">Django</a> as the backend framework, with <a href="https://www.postgresql.org/">PostgreSQL</a> and <a href="https://postgis.net/">PostGIS</a> for database management and geographic data handling. The application is containerized using <a href="https://www.docker.com/">Docker</a> and orchestrated with <a href="https://kubernetes.io/">Kubernetes</a>.
 
 For background task processing, <a href="https://docs.celeryq.dev/en/stable/">Celery</a> is used, with <a href="https://redis.io/">Redis</a> serving as both the caching layer and the message broker. Monitoring and logging are handled with <a href="https://grafana.com/">Grafana</a>, <a href="https://prometheus.io/docs/guides/node-exporter/">Node Exporter</a>, <a href="https://grafana.com/docs/loki/latest/getting-started/promtail/">Promtail</a>, and <a href="https://grafana.com/oss/loki/">Loki</a>.
