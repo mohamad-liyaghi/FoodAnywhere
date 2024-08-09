@@ -1,0 +1,2 @@
+class InsufficientBalanceError(Exception):
+    pass
