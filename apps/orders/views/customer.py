@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from drf_spectacular.utils import extend_schema_view, OpenApiResponse, extend_schema
 from orders.enums import OrderStatus
-from orders.exceptions import InsufficientBalanceException
+from transactions.exceptions import InsufficientBalanceError
 from orders.models import Order
 from orders.serializers import OrderSerializer
 
@@ -80,7 +80,7 @@ class OrderPayView(APIView):
             order.save()
             return Response({"message": "Order is being processed"}, status=status.HTTP_200_OK)
 
-        except InsufficientBalanceException:
+        except InsufficientBalanceError:
             return Response({"error": "Insufficient balance"}, status=status.HTTP_400_BAD_REQUEST)
 
 

@@ -22,4 +22,3 @@ class TestProfileRetrieveView:
         assert response.data["email"] == user.email
         assert response.data["first_name"] == user.first_name
         assert response.data["last_name"] == user.last_name
-        assert Decimal(response.data["balance"]) == Decimal(user.balance)

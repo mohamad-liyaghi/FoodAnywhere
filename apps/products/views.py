@@ -39,7 +39,7 @@ class ProductListCreateView(ListCreateAPIView):
         restaurant = self._get_restaurant()
         return Product.objects.select_related("restaurant", "restaurant__owner").filter(
             restaurant=restaurant, is_deleted=False
-        )  # TODO: make this single query
+        )
 
     def _get_restaurant(self, for_creation=False):
         if not for_creation:

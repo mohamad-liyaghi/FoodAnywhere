@@ -3,6 +3,7 @@ from django.conf import settings
 from decimal import Decimal
 from uuid import uuid4
 from transactions.enums import TransactionType, TransactionStatus
+from transactions.exceptions import InsufficientBalanceError
 from transactions.tasks import do_withdraw
 
 
@@ -21,18 +22,46 @@ class Transaction(models.Model):
 
     def save(self, *args, **kwargs):
         if self.status == TransactionStatus.SUCCESS and not self.is_processed:
-            if self.type == TransactionType.DEPOSIT:
-                self._handle_deposit()
-            elif self.type == TransactionType.WITHDRAWAL:
-                self._handle_withdrawal()
-            self.is_processed = True
-        return super().save(*args, **kwargs)
+            self._process_transaction()
+        super().save(*args, **kwargs)
 
-    def _handle_deposit(self):
-        self.user.balance += Decimal(self.amount)
+    def _process_transaction(self):
+        amount = Decimal(self.amount)
+
+        if self.type == TransactionType.DEPOSIT:
+            self._adjust_balance(amount)
+        elif self.type in {TransactionType.WITHDRAWAL, TransactionType.COST}:
+            self._adjust_balance(-amount)
+        elif self.type == TransactionType.CHARGE:
+            self._adjust_balance(amount)
+
+        self.is_processed = True
+
+        if self.type == TransactionType.WITHDRAWAL:
+            do_withdraw.delay(self.user.id, self.id)
+
+    def _adjust_balance(self, amount):
+        if amount < 0 and self.user.balance < abs(amount):
+            raise InsufficientBalanceError
+        self.user.balance += amount
         self.user.save()
 
-    def _handle_withdrawal(self):
-        self.user.balance -= Decimal(self.amount)
-        self.user.save()
-        do_withdraw.delay(self.user.id, self.id)
+    @classmethod
+    def transfer(cls, sender, receiver, amount) -> tuple:
+        """Transfer money from sender to receiver."""
+        if sender.balance < amount:
+            raise InsufficientBalanceError
+
+        sender_transaction = cls.objects.create(
+            user=sender,
+            amount=amount,
+            type=TransactionType.COST,
+            status=TransactionStatus.SUCCESS,
+        )
+        receiver_transaction = cls.objects.create(
+            user=receiver,
+            amount=amount,
+            type=TransactionType.CHARGE,
+            status=TransactionStatus.SUCCESS,
+        )
+        return sender_transaction, receiver_transaction

@@ -25,3 +25,13 @@ class TestTransactionModel:
             status=TransactionStatus.SUCCESS,
         )
         assert user.balance == user_balance - Decimal(successful_withdrawal.amount)
+
+    def test_transfer_money_between_users(self, user, another_user):
+        user_balance = user.balance
+        another_user_balance = another_user.balance
+        amount = Decimal(100.00)
+        Transaction.transfer(user, another_user, amount)
+        user.refresh_from_db()
+        another_user.refresh_from_db()
+        assert user.balance == user_balance - amount
+        assert another_user.balance == another_user_balance + amount
