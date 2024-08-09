@@ -66,6 +66,11 @@ class Order(models.Model):
 
         with transaction.atomic():
             OrderItem.objects.bulk_create(order_items)
+
+            for item in order_items:
+                item.product.quantity -= item.quantity
+                item.product.save()
+
             for order in orders.values():
                 order.save()
 

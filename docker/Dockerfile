@@ -25,4 +25,3 @@ COPY . /src/
 WORKDIR /src
 
 EXPOSE 8000
-# TODO: This Dockerfile is shit, clean it up
