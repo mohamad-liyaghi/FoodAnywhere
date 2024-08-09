@@ -4,8 +4,9 @@ from decouple import config
 from django.conf import settings
 from django.db.models import QuerySet
 from uuid import uuid4
-from orders.exceptions import EmptyCartException, InsufficientBalanceException
+from orders.exceptions import EmptyCartException
 from orders.enums import OrderStatus
+from transactions.models import Transaction
 from restaurants.models import Restaurant
 from products.models import Product
 
@@ -25,10 +26,11 @@ class Order(models.Model):
 
     def save(self, *args, **kwargs):
         if self.status == OrderStatus.PROCESSING and not self.is_removed_from_balance:
-            if self.user.balance < self.total_price:
-                raise InsufficientBalanceException
-            self.user.balance -= self.total_price
-            self.user.save()
+            Transaction.transfer(
+                sender=self.user,
+                receiver=self.restaurant.owner,
+                amount=self.total_price,
+            )
         return super().save(*args, **kwargs)
 
     @classmethod
