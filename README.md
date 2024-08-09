@@ -42,7 +42,7 @@ Vendors can easily register their restaurants, manage their menus, and add produ
 
 This project uses <a href="https://docs.djangoproject.com/">Django</a> as the backend framework, with <a href="https://www.postgresql.org/">PostgreSQL</a> and <a href="https://postgis.net/">PostGIS</a> for database management and geographic data handling. The application is containerized using <a href="https://www.docker.com/">Docker</a> and orchestrated with <a href="https://kubernetes.io/">Kubernetes</a>.
 
-For background task processing, <a href="https://docs.celeryq.dev/en/stable/">Celery</a> is used, with <a href="https://redis.io/">Redis</a> serving as both the caching layer and the message broker. Monitoring and logging are handled with <a href="https://grafana.com/">Grafana</a>, <a href="https://prometheus.io/docs/guides/node-exporter/">Node Exporter</a>, <a href="https://grafana.com/docs/loki/latest/getting-started/promtail/">Promtail</a>, and <a href="https://grafana.com/oss/loki/">Loki</a>.
+For background task processing, <a href="https://docs.celeryq.dev/en/stable/">Celery</a> is used, with <a href="https://redis.io/">Redis</a> serving as both the caching layer and the message broker. Monitoring and logging are handled with <a href="https://grafana.com/">Grafana</a>, <a href="https://prometheus.io/docs/guides/node-exporter/">Node Exporter</a>, <a href="https://grafana.com/docs/loki/latest/getting-started/promtail/">Promtail</a>, and <a href="https://grafana.com/docs/loki/latest/">Loki</a>.
 
 Testing is managed with <a href="https://docs.pytest.org/en/stable/">pytest</a> to ensure code quality and reliability.
 
