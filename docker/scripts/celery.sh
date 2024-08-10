@@ -6,6 +6,10 @@ if [[ $ENVIRONMENT == "PRODUCTION" ]]; then
 else
     LOGLEVEL="DEBUG"
 fi
+echo "Creating Log File"
+if [ ! -f /var/log/celery.log ]; then
+    touch /var/log/celery.log
+fi
 
 echo "Running celery worker..."
 celery -A config worker --loglevel=$LOGLEVEL -f /var/log/celery.log
