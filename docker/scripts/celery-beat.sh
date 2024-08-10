@@ -8,9 +8,9 @@ else
 fi
 
 echo "Creating Log File"
-if [ ! -f /var/log/celery-beat.log ]; then
-    touch /var/log/celery-beat.log
+if [ ! -f /var/log/celery-beat/info.log ]; then
+    touch /var/log/celery-beat/info.log
 fi
 
 echo "Running celery beat worker..."
-celery -A config beat --loglevel=$LOGLEVEL -f /var/log/celery-beat.log
+celery -A config beat --loglevel=$LOGLEVEL -f /var/log/celery-beat/info.log

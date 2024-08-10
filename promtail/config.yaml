@@ -30,7 +30,7 @@ scrape_configs:
       - targets:
           - celery
         labels:
-          __path__: "/var/log/celery.log"
+          __path__: "/var/log/celery/info.log"
           app: celery
 
   - job_name: celery-beat-log-scraper
@@ -38,5 +38,5 @@ scrape_configs:
       - targets:
           - celery-beat
         labels:
-          __path__: "/var/log/celery-beat.log"
+          __path__: "/var/log/celery-beat/info.log"
           app: celery-beat

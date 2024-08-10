@@ -20,7 +20,7 @@ services:
     command: sh ./docker/scripts/celery.sh
     volumes:
       - .:/src
-      - ./logs/celery.log:/var/log/celery.log
+      - ./logs/celery:/var/log/celery
     networks:
       - main
     depends_on:
@@ -29,10 +29,10 @@ services:
   celery-beat:
     restart: on-failure
     container_name: food-anywhere-celery-beat
-    command: sh ./docker/scripts/celery.sh
+    command: sh ./docker/scripts/celery-beat.sh
     volumes:
       - .:/src
-      - ./logs/celery.log:/var/log/celery-beat.log
+      - ./logs/celery-beat/:/var/log/celery-beat/
     networks:
       - main
     depends_on:

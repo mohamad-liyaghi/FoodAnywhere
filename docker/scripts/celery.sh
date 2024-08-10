@@ -7,9 +7,9 @@ else
     LOGLEVEL="DEBUG"
 fi
 echo "Creating Log File"
-if [ ! -f /var/log/celery.log ]; then
-    touch /var/log/celery.log
+if [ ! -f /var/log/celery/info.log ]; then
+    touch /var/log/celery/info.log
 fi
 
 echo "Running celery worker..."
-celery -A config worker --loglevel=$LOGLEVEL -f /var/log/celery.log
+celery -A config worker --loglevel=$LOGLEVEL -f /var/log/celery/info.log
