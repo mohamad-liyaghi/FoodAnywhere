@@ -1,13 +1,13 @@
 #!/bin/sh
 
-# shellcheck disable=SC2039
+# shellcheck disable=SC3010
 if [[ $ENVIRONMENT == "PRODUCTION" ]]; then
     LOGLEVEL="CRITICAL"
 else
     LOGLEVEL="DEBUG"
 fi
 
-echo "Creating Log File"
+echo "Preparing Log File"
 if [ ! -f /var/log/celery-beat/info.log ]; then
     touch /var/log/celery-beat/info.log
 fi
