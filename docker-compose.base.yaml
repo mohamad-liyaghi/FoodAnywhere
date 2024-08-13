@@ -144,6 +144,7 @@ services:
       - main
     volumes:
       - food_anywhere_grafana_data:/var/lib/grafana
+      - ./grafana/datasources.yaml:/etc/grafana/provisioning/datasources/dashboard.yaml
 
   jaeger:
     image: jaegertracing/all-in-one:1.32
