@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: food-anywhere-jaeger-dp
+  labels:
+    app: food-anywhere-jaeger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: food-anywhere-jaeger
+  template:
+    metadata:
+      labels:
+        app: food-anywhere-jaeger
+    spec:
+      containers:
+        - name: jaeger
+          image: jaegertracing/all-in-one:1.32
+          ports:
+            - containerPort: 16686
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger
+spec:
+  selector:
+    app: food-anywhere-jaeger
+  ports:
+    - protocol: TCP
+      port: 16686
+      targetPort: 16686
