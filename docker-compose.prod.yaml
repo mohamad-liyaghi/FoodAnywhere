@@ -60,6 +60,10 @@ services:
     extends:
       service: prometheus
       file: docker-compose.base.yaml
+  jaeger:
+    extends:
+      service: jaeger
+      file: docker-compose.base.yaml
 
 networks:
   main:
@@ -69,3 +73,4 @@ volumes:
   food_anywhere_grafana_data:
   food_anywhere_node_exporter_data:
   food_anywhere_prometheus_data:
+  food_anywhere_jaeger_data:

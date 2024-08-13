@@ -109,6 +109,10 @@ LOGGING = {
             "format": "{levelname} {message}",
             "style": "{",
         },
+        "trace_formatter": {
+            "format": "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] [trace_id=%(otelTraceID)s span_id=%(otelSpanID)s] [%(funcName)s] %(message)s",  # noqa
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
     },
     "handlers": {
         "file_info": {

@@ -6,6 +6,7 @@
 - [Monitoring](#monitoring)
   - [Node Exporter](#node-exporter)
   - [Loki](#loki)
+  - [OpenTelemetry](#opentelemetry)
 - [Application](#application)
   - [User](#user)
   - [Active Session](#active-session)
@@ -37,12 +38,14 @@ Vendors can easily register their restaurants, manage their menus, and add produ
   <img style="height:30px;" alt="prometheus" src="https://img.shields.io/badge/Prometheus-E6522C.svg?style=flat&logo=prometheus&logoColor=white">
   <img style="height:30px;" alt="loki" src="https://img.shields.io/badge/Loki-3B2E5A.svg?style=flat&logo=loki&logoColor=white">
   <img style="height:30px;" alt="pytest" src="https://img.shields.io/badge/Pytest-0A9EDC.svg?style=flat&logo=pytest&logoColor=white">
+  <img style="height:30px;" alt="jaeger" src="https://img.shields.io/badge/Jaeger-FF6F00.svg?style=flat&logo=jaeger&logoColor=white">
+  <img style="height:30px;" alt="opentelemetry" src="https://img.shields.io/badge/OpenTelemetry-FF6F00.svg?style=flat&logo=opentelemetry&logoColor=white">
 </div>
 <br>
 
 This project uses <a href="https://docs.djangoproject.com/">Django</a> as the backend framework, with <a href="https://www.postgresql.org/">PostgreSQL</a> and <a href="https://postgis.net/">PostGIS</a> for database management and geographic data handling. The application is containerized using <a href="https://www.docker.com/">Docker</a> and orchestrated with <a href="https://kubernetes.io/">Kubernetes</a>.
 
-For background task processing, <a href="https://docs.celeryq.dev/en/stable/">Celery</a> is used, with <a href="https://redis.io/">Redis</a> serving as both the caching layer and the message broker. Monitoring and logging are handled with <a href="https://grafana.com/">Grafana</a>, <a href="https://prometheus.io/docs/guides/node-exporter/">Node Exporter</a>, <a href="https://grafana.com/docs/loki/latest/getting-started/promtail/">Promtail</a>, and <a href="https://grafana.com/docs/loki/latest/">Loki</a>.
+For background task processing, <a href="https://docs.celeryq.dev/en/stable/">Celery</a> is used, with <a href="https://redis.io/">Redis</a> serving as both the caching layer and the message broker. Monitoring and logging are handled with <a href="https://grafana.com/">Grafana</a>, <a href="https://prometheus.io/docs/guides/node-exporter/">Node Exporter</a>, <a href="https://grafana.com/docs/loki/latest/getting-started/promtail/">Promtail</a>, and <a href="https://grafana.com/docs/loki/latest/">Loki</a>, Also <a href="https://www.jaegertracing.io/">Jaeger</a> is used for distributed tracing.
 
 Testing is managed with <a href="https://docs.pytest.org/en/stable/">pytest</a> to ensure code quality and reliability.
 
@@ -61,6 +64,16 @@ Loki is a log aggregation system that is used to store and query logs from the a
 
 Here is an example of the Loki dashboard in Grafana:
 <img src="./images/loki.png" alt="Loki"/>
+
+### OpenTelemetry
+This Project uses OpenTelemetry as its distributed tracing system. Jaeger is used to collect, store, and visualize traces from the application. It provides insights into the performance of the application and helps identify bottlenecks and issues.
+
+Here is an example of the Jaeger dashboard:
+<img src="./images/jaeger.png" alt="Jaeger"/>
+
+Here is an example of the metrics in grafana:
+<img src="./images/opentelemetry_metrics.png" alt="Open Telemetry"/>
+
 
 ## Application
 To make the application easier to understand, we have divided it into several components. Each component is responsible for a specific part of the application. The components are as follows:
