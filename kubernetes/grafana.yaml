@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: food-anywhere-grafana-dp
+  labels:
+    app: food-anywhere-grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: food-anywhere-grafana
+  template:
+    metadata:
+      labels:
+        app: food-anywhere-grafana
+    spec:
+      containers:
+        - name: grafana
+          image: grafana/grafana
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: grafana-config
+              mountPath: /etc/grafana/provisioning/datasources
+              subPath: dashboard.yaml
+      volumes:
+        - name: grafana-config
+          configMap:
+            name: grafana-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+spec:
+  selector:
+    app: food-anywhere-grafana
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
