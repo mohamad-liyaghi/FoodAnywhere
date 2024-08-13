@@ -145,6 +145,16 @@ services:
     volumes:
       - food_anywhere_grafana_data:/var/lib/grafana
 
+  jaeger:
+    image: jaegertracing/all-in-one:1.32
+    container_name: food-anywhere-jaeger
+    ports:
+      - 16686:16686
+    networks:
+      - main
+    volumes:
+      - food_anywhere_jaeger_data:/var/lib/jaeger
+
 
 networks:
   main:
