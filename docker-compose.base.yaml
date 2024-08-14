@@ -78,7 +78,7 @@ services:
     networks:
       - main
   promtail:
-    image: grafana/promtail
+    image: grafana/promtail:2.5.0
     container_name: food-anywhere-promtail
     volumes:
       - ./promtail/config.yaml:/etc/promtail/promtail.yaml
@@ -89,7 +89,7 @@ services:
     networks:
       - main
   loki:
-    image: grafana/loki
+    image: grafana/loki:2.5.0
     container_name: food-anywhere-loki
     ports:
       - "3100:3100"
@@ -98,7 +98,7 @@ services:
     networks:
       - main
   node_exporter:
-    image: quay.io/prometheus/node-exporter:latest
+    image: quay.io/prometheus/node-exporter:v1.2.2
     container_name: food-anywhere-node-exporter
     restart: unless-stopped
     volumes:
@@ -116,7 +116,7 @@ services:
     networks:
       - main
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:v2.35.0
     container_name: food-anywhere-prometheus
     volumes:
       - ./prometheus/config.yaml:/etc/prometheus/prometheus.yml
@@ -134,7 +134,7 @@ services:
     networks:
       - main
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:8.2.3
     container_name: food-anywhere-grafana
     ports:
       - 3000:3000
