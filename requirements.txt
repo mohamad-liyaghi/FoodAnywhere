@@ -33,7 +33,7 @@ mypy-extensions==1.0.0
 nodeenv==1.9.1
 opentelemetry-api==1.10.0
 opentelemetry-exporter-jaeger==1.10.0
-opentelemetry-instrumentation==0.29b0
+opentelemetry-instrumentation==0.41b0
 opentelemetry-instrumentation-django==0.29b0
 opentelemetry-instrumentation-logging==0.29b0
 opentelemetry-instrumentation-requests==0.29b0
