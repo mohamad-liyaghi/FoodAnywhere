@@ -115,6 +115,8 @@ services:
       - 9100
     networks:
       - main
+    depends_on:
+      - backend
   prometheus:
     image: prom/prometheus:v2.35.0
     container_name: food-anywhere-prometheus
@@ -133,19 +135,6 @@ services:
       - backend
     networks:
       - main
-  grafana:
-    image: grafana/grafana:8.2.3
-    container_name: food-anywhere-grafana
-    ports:
-      - 3000:3000
-    depends_on:
-      - loki
-    networks:
-      - main
-    volumes:
-      - food_anywhere_grafana_data:/var/lib/grafana
-      - ./grafana/datasources.yaml:/etc/grafana/provisioning/datasources/dashboard.yaml
-
   jaeger:
     image: jaegertracing/all-in-one:1.32
     container_name: food-anywhere-jaeger
@@ -155,6 +144,22 @@ services:
       - main
     volumes:
       - food_anywhere_jaeger_data:/var/lib/jaeger
+    depends_on:
+      - backend
+  grafana:
+    image: grafana/grafana:8.2.3
+    container_name: food-anywhere-grafana
+    ports:
+      - 3000:3000
+    networks:
+      - main
+    volumes:
+      - food_anywhere_grafana_data:/var/lib/grafana
+      - ./grafana/datasources.yaml:/etc/grafana/provisioning/datasources/dashboard.yaml
+    depends_on:
+      - loki
+      - prometheus
+      - jaeger
 
 
 networks:
