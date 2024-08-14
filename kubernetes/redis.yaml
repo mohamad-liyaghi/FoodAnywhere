@@ -21,6 +21,9 @@ spec:
           image: redis:6.2-alpine
           ports:
             - containerPort: 6379
+          resizePolicy:
+            - resourceName: memory
+              restartPolicy: Always
 
 ---
 apiVersion: v1
