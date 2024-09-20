@@ -8,7 +8,6 @@ repos:
         args: # arguments to configure black
           - --line-length=120
           - --include='\.pyi?$'
-
           # these folders wont be formatted by black
           - --exclude="""\.git |
             \.__pycache__|
@@ -55,3 +54,12 @@ repos:
         language: system
         types: [python]
         entry: refurb
+  - repo: local
+    hooks:
+      - id: run-tests
+        name: Run tests
+        entry: make test
+        language: system
+        stages: [ commit, push ]
+        pass_filenames: false
+        verbose: true
